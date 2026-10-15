@@ -1,3 +1,5 @@
+import { openPairing, syncPairing } from './pairingUi';
+import { installOffline, offlineStatus } from './offline';
 import './style.css';
 import './uiMotion.css';
 import { installHandDrag } from './handDrag';
@@ -61,13 +63,12 @@ type RoleDeckSnapshot = { round: number; statuses: Record<CharacterId, RoleCardS
 // physical cards instead of revealing cards as AI players pick them.
 const roleDeckSnapshots = new Map<number, RoleDeckSnapshot>();
 let localViewer = 0;
-let mode: 'local' | 'online' = new URLSearchParams(location.search).has('room') ? 'online' : 'local';
+let mode: 'local' | 'online' = 'local';
 let onlineName = localStorage.getItem('citadels-player-name') ?? '';
-let onlineCode = new URLSearchParams(location.search).get('room')?.toUpperCase() ?? '';
 let onlineCapacity = 4;
 let onlineAiCount = 0;
 let onlineNotice = '';
-let shareOrigin = location.origin;
+
 let lastDrawEvent = 0;
 let lastRoomCode = '';
 let lastArrowSent = 0;
@@ -266,6 +267,7 @@ function animateDrawEvents(events: { player: number; count: number }[]) {
 }
 
 function render() {
+  syncPairing(online);
   window.clearTimeout(aiTimer);
   if (mode === 'local' && state) {
     for (let i = 0; i < state.players.length && state.phase === 'income'; i++) if (beginTurn(state)) break;
@@ -309,7 +311,7 @@ function homeCityArtwork() {
 function setupView() {
   return `<main class="shell home-shell">${fullscreenButton('page-fullscreen')}<div class="home-layout">
     <section class="home-intro" aria-labelledby="home-title"><div class="home-edition"><span class="home-crest">✦</span><span>CITADELS<span class="home-edition-rule"></span>THE ROYAL TABLE</span></div><div class="home-title-copy"><p class="eyebrow">城市 · 身份 · 权谋</p><h1 id="home-title">富饶之城</h1><p class="home-tagline">王冠之下，各筑其城。</p></div>${homeCityArtwork()}<div class="home-facts"><span><b>2–8</b> 位城主</span><i></i><span><b>8</b> 种身份</span><i></i><span>同机 / 联机</span></div></section>
-    <section class="home-play-panel" aria-label="对局设置"><div class="mode-switch" role="group" aria-label="游戏模式"><button data-action="mode-local" aria-pressed="${mode === 'local'}" class="${mode === 'local' ? 'active' : ''}"><span aria-hidden="true">♜</span>同机游玩</button><button data-action="mode-online" aria-pressed="${mode === 'online'}" class="${mode === 'online' ? 'active' : ''}"><span aria-hidden="true">♟</span>在线联机</button></div>
+    <section class="home-play-panel" aria-label="对局设置"><div class="mode-switch" role="group" aria-label="游戏模式"><button data-action="mode-local" aria-pressed="${mode === 'local'}" class="${mode === 'local' ? 'active' : ''}"><span aria-hidden="true">♜</span>同机游玩</button><button data-action="mode-online" aria-pressed="${mode === 'online'}" class="${mode === 'online' ? 'active' : ''}"><span aria-hidden="true">♟</span>离线联机</button></div>
     ${mode === 'online' ? onlineSetupView() : `
     <section class="setup-card home-local-setup"><div class="setup-heading"><div><span class="eyebrow">LOCAL TABLE</span><h2>开启一桌好戏</h2></div><span class="player-count">2–8 人</span></div>
       <div class="home-player-settings"><label>桌上城主 <strong>${setupPlayers}<small> 人</small></strong><input aria-label="桌上城主" type="range" min="2" max="8" value="${setupPlayers}" data-bind="players" /></label><label>真人玩家 <strong>${setupHumans}<small> 人</small></strong><input aria-label="真人玩家" type="range" min="1" max="${setupPlayers}" value="${setupHumans}" data-bind="humans" /></label></div>
@@ -324,12 +326,11 @@ function connectionChip() {
 }
 function noticeView() { return onlineNotice ? `<div class="online-notice" role="status">${esc(onlineNotice)}</div>` : ''; }
 function onlineSetupView() {
-  const busy = online.pending || online.hasSession;
+  const busy = online.pending || online.status === 'connected';
   return `<section class="setup-card online-setup"><div class="setup-heading"><div><span class="eyebrow">FRIENDS TABLE</span><h2>邀请城主入席</h2></div>${connectionChip()}</div>
-    ${noticeView()}<div class="online-form"><label>玩家昵称<input data-online="name" maxlength="24" placeholder="输入昵称" value="${esc(onlineName)}" autocomplete="nickname" /></label>
+    ${noticeView()}<p class="offline-status">${esc(offlineStatus())}</p><p>所有玩家连接同一热点或 Wi-Fi。房主创建房间后逐一扫码配对，无需互联网。</p><div class="online-form"><label>玩家昵称<input data-online="name" maxlength="24" placeholder="输入昵称" value="${esc(onlineName)}" autocomplete="nickname" /></label>
     <div class="home-room-options"><div class="home-room-create"><div class="online-form-row"><label>房间人数<select data-online="capacity">${Array.from({ length: 7 }, (_, i) => i + 2).map(n => `<option value="${n}" ${n === onlineCapacity ? 'selected' : ''}>${n} 人</option>`).join('')}</select></label><label>AI 城主<select data-online="ai">${Array.from({ length: onlineCapacity }, (_, n) => `<option value="${n}" ${n === onlineAiCount ? 'selected' : ''}>${n} 位</option>`).join('')}</select></label></div>
-    <div class="online-controls"><button class="primary full" data-action="online-create" ${busy ? 'disabled' : ''}>创建房间</button></div></div><div class="home-room-join"><label>加入已有房间<input aria-label="房间码" data-online="code" maxlength="6" placeholder="输入 6 位房间码" value="${esc(onlineCode)}" autocomplete="off" autocapitalize="characters" /></label>
-    <button class="secondary full" data-action="online-join" ${busy ? 'disabled' : ''}>加入房间</button></div></div></div>
+    <div class="online-controls"><button class="primary full" data-action="online-create" ${busy ? 'disabled' : ''}>创建房间</button></div></div><div class="home-room-join"><p>请向房主获取邀请二维码，导入后生成回复，再由房主扫描。</p><button class="secondary full" data-action="online-join" ${busy ? 'disabled' : ''}>扫码 / 导入配对</button></div></div></div>
     ${online.hasSession ? '<div class="online-controls"><button class="secondary" data-action="online-reconnect">恢复连接</button><button class="secondary" data-action="online-leave">离开原房间</button></div>' : ''}</section>`;
 }
 function lobbyView(room: Room) {
@@ -339,13 +340,13 @@ function lobbyView(room: Room) {
   const seats = room.members.map(member => `<article class="lobby-seat ${member.ready ? 'ready' : ''} ${!member.connected ? 'offline' : ''} ${member.id === room.hostId ? 'host' : ''}"><span class="lobby-avatar">${member.id === room.hostId ? '♛' : '♟'}</span><div class="lobby-member-copy"><strong>${esc(member.name)}${member.id === online.playerId ? '（你）' : ''}</strong><small>${member.id === room.hostId ? '房主' : '城主'}</small></div><span class="lobby-member-state">${!member.connected ? '离线' : member.ready ? '已准备' : '未准备'}</span></article>`);
   for (let i = 0; i < room.aiCount; i++) seats.push(`<article class="lobby-seat ready"><span class="lobby-avatar">◆</span><div class="lobby-member-copy"><strong>AI 城主 ${i + 1}</strong><small>自动行动</small></div><span class="lobby-member-state">已准备</span></article>`);
   while (seats.length < room.capacity) seats.push('<article class="lobby-seat empty"><span class="lobby-avatar">＋</span><div class="lobby-member-copy"><strong>空位</strong><small>等待玩家加入</small></div></article>');
-  return `<main class="shell setup-shell">${fullscreenButton('page-fullscreen')}<section class="brand-lockup"><div class="crest large">✦</div><h1>富饶之城</h1></section><section class="online-lobby"><header><div><span class="eyebrow">房间大厅</span><h2>等待城主入席</h2></div>${connectionChip()}</header><div class="online-controls"><span class="room-code"><small>房间码</small>${esc(room.code)}</span><button class="invite-button" data-action="online-invite">复制邀请链接</button></div>${noticeView()}<div class="lobby-seats">${seats.join('')}</div><div class="lobby-actions"><button class="${ready ? 'secondary' : 'primary'}" data-action="online-ready" ${canAct() ? '' : 'disabled'}>${ready ? '取消准备' : '准备'}</button>${room.hostId === online.playerId ? `<button class="primary" data-action="online-start" ${canStart ? '' : 'disabled'}>开始对局</button>` : ''}<button class="secondary" data-action="online-leave">离开房间</button></div></section></main>`;
+  return `<main class="shell setup-shell">${fullscreenButton('page-fullscreen')}<section class="brand-lockup"><div class="crest large">✦</div><h1>富饶之城</h1></section><section class="online-lobby"><header><div><span class="eyebrow">房间大厅</span><h2>等待城主入席</h2></div>${connectionChip()}</header><div class="online-controls"><span class="room-code"><small>房间码</small>${esc(room.code)}</span>${online.isHost ? '<button class="invite-button" data-action="online-invite">邀请玩家 / 重连配对</button>' : ''}</div>${noticeView()}${!online.isHost && online.status !== 'connected' ? '<button class="secondary" data-action="online-reconnect">重新配对</button>' : ''}<div class="lobby-seats">${seats.join('')}</div><div class="lobby-actions"><button class="${ready ? 'secondary' : 'primary'}" data-action="online-ready" ${canAct() ? '' : 'disabled'}>${ready ? '取消准备' : '准备'}</button>${room.hostId === online.playerId ? `<button class="primary" data-action="online-start" ${canStart ? '' : 'disabled'}>开始对局</button>` : ''}<button class="secondary" data-action="online-leave">${online.isHost ? '结束房间' : '离开房间'}</button></div></section></main>`;
 }
 function onlineTableBar() {
   const room = online.room;
   if (mode !== 'online' || !room) return '';
   const disconnected = room.members.filter(member => !member.connected).map(member => esc(member.name));
-  return `<div class="online-table-bar">${connectionChip()}${disconnected.length ? `<span>${disconnected.join('、')} 等待重连</span>` : ''}<button class="invite-button" data-action="online-invite">复制邀请</button>${room.status === 'ended' && room.hostId === online.playerId ? '<button class="online-button" data-action="online-rematch">再来一局</button>' : ''}<button class="online-button" data-action="online-leave">离开房间</button>${noticeView()}</div>`;
+  return `<div class="online-table-bar">${connectionChip()}${!online.isHost && online.status !== 'connected' ? '<button class="online-button" data-action="online-reconnect">重新配对</button>' : ''}${disconnected.length ? `<span>${disconnected.join('、')} 等待重连</span>` : ''}${online.isHost ? '<button class="invite-button" data-action="online-invite">邀请玩家 / 重连配对</button>' : ''}${room.status === 'ended' && room.hostId === online.playerId ? '<button class="online-button" data-action="online-rematch">再来一局</button>' : ''}<button class="online-button" data-action="online-leave">${online.isHost ? '结束房间' : '离开房间'}</button>${noticeView()}</div>`;
 }
 
 function playerRingCard(p: Player, s: GameState, active: boolean) {
@@ -541,7 +542,6 @@ app.addEventListener('input', e => {
   if (el.dataset.bind === 'players') { setupPlayers = Number(el.value); setupHumans = Math.min(setupHumans, setupPlayers); render(); }
   if (el.dataset.bind === 'humans') { setupHumans = Number(el.value); render(); }
   if (el.dataset.online === 'name') { onlineName = el.value; localStorage.setItem('citadels-player-name', onlineName); }
-  if (el.dataset.online === 'code') { onlineCode = el.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); el.value = onlineCode; }
 });
 app.addEventListener('change', e => {
   const el = e.target as HTMLSelectElement;
@@ -549,18 +549,8 @@ app.addEventListener('change', e => {
   if (el.dataset.online === 'ai') onlineAiCount = Number(el.value);
 });
 async function copyInvitation() {
-  if (!online.room) return;
-  const link = new URL('/', shareOrigin); link.searchParams.set('room', online.room.code);
-  try {
-    if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(link.href);
-    else {
-      const input = document.createElement('textarea'); input.value = link.href;
-      input.style.position = 'fixed'; input.style.opacity = '0'; document.body.append(input); input.select();
-      const copied = document.execCommand('copy'); input.remove(); if (!copied) throw new Error('copy');
-    }
-    onlineNotice = '邀请链接已复制';
-  } catch { onlineNotice = `邀请链接：${link.href}`; }
-  render();
+  try { await online.invite(); openPairing(online, onlineName); }
+  catch (error) { onlineNotice = error instanceof Error ? error.message : '生成邀请失败'; render(); }
 }
 app.addEventListener('click', e => {
   const target = e.target as HTMLElement;
@@ -584,14 +574,13 @@ app.addEventListener('click', e => {
     if (action === 'online-create' || action === 'online-join') {
       if (!onlineName.trim()) onlineNotice = '请输入玩家昵称';
       else if (action === 'online-create') online.request({ type: 'create', name: onlineName.trim(), capacity: onlineCapacity, aiCount: onlineAiCount });
-      else if (onlineCode.length !== 6) onlineNotice = '请输入 6 位房间码';
-      else online.request({ type: 'join', name: onlineName.trim(), code: onlineCode });
+      else openPairing(online, onlineName);
     } else if (action === 'online-ready') online.request({ type: 'ready', ready: !online.room?.members.find(member => member.id === online.playerId)?.ready });
     else if (action === 'online-start') online.request({ type: 'start' });
     else if (action === 'online-rematch') { resetOverlays(); lastDrawEvent = 0; online.request({ type: 'rematch' }); }
-    else if (action === 'online-reconnect') online.connect();
+    else if (action === 'online-reconnect') { if (online.isHost) online.connect(); else openPairing(online, onlineName); }
     else if (action === 'online-invite') { void copyInvitation(); return; }
-    else if (action === 'online-leave') { if (online.status !== 'connected') onlineNotice = '连接恢复后将自动离开房间'; online.leave(); resetOverlays(); }
+    else if (action === 'online-leave') { online.leave(); resetOverlays(); }
   } else if (abilityBackdrop && target === abilityBackdrop) { pendingAbility = null; redrawCards.clear(); }
   else if (action === 'close-ability-target') { pendingAbility = null; redrawCards.clear(); }
   else if (target.closest<HTMLElement>('[data-redraw-card]') && pendingAbility?.mode === 'hand') {
@@ -761,9 +750,7 @@ window.addEventListener('resize', () => remoteArrows.forEach(drawRemoteArrow));
 window.addEventListener('scroll', () => remoteArrows.forEach(drawRemoteArrow), true);
 
 if (online.hasSession) { mode = 'online'; online.connect(); }
-void fetch('/online/health').then(response => response.json()).then(health => {
-  if (['localhost', '127.0.0.1'].includes(location.hostname) && health.addresses?.length) shareOrigin = `${location.protocol}//${health.addresses[0]}:${location.port}`;
-}).catch(() => {});
+installOffline(() => { if (!state) render(); });
 installHandDrag(app);
 installRoleHints(app);
 installFullscreen(app);

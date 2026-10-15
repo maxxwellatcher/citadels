@@ -10,6 +10,8 @@
 !vite.config.ts
 !src/
 !src/**
+!public/
+!public/**
 !server/
 !server/index.mjs
 

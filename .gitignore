@@ -1,0 +1,6 @@
+node_modules/
+dist/
+server-build/
+citadels-offline.zip
+test-results/
+playwright-report/
