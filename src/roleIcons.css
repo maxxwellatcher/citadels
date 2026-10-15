@@ -1,0 +1,228 @@
+.role-emblem {
+  --role-metal: #e8c78d;
+  --role-shadow: #977344;
+  --role-highlight: #fff1c5;
+  --role-accent: #aa854d;
+  --role-field: #27242a;
+  --role-dark: #17191f;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  vertical-align: middle;
+  pointer-events: none;
+  user-select: none;
+  overflow: visible;
+}
+
+.role-emblem--assassin {
+  --role-metal: #d9c7b6;
+  --role-shadow: #907667;
+  --role-accent: #9b6968;
+  --role-field: #272126;
+}
+
+.role-emblem--thief {
+  --role-metal: #cdd0d5;
+  --role-shadow: #78818c;
+  --role-highlight: #eef0ed;
+  --role-accent: #626b77;
+  --role-field: #202329;
+}
+
+.role-emblem--magician {
+  --role-metal: #dac4df;
+  --role-shadow: #94769f;
+  --role-accent: #966cad;
+  --role-field: #292238;
+}
+
+.role-emblem--king {
+  --role-metal: #f0ce83;
+  --role-shadow: #a67a39;
+  --role-accent: #a76546;
+  --role-field: #2c261c;
+}
+
+.role-emblem--bishop {
+  --role-metal: #d3d6cc;
+  --role-shadow: #81939b;
+  --role-accent: #597e99;
+  --role-field: #202a35;
+}
+
+.role-emblem--merchant {
+  --role-metal: #d6d29d;
+  --role-shadow: #8c8650;
+  --role-accent: #769567;
+  --role-field: #202c25;
+}
+
+.role-emblem--architect {
+  --role-metal: #d8cbbc;
+  --role-shadow: #9d735a;
+  --role-accent: #c38b61;
+  --role-field: #30261f;
+}
+
+.role-emblem--warlord {
+  --role-metal: #dfba9c;
+  --role-shadow: #9b715b;
+  --role-accent: #9e5553;
+  --role-field: #302226;
+}
+
+.role-emblem .role-rim {
+  fill: #292521;
+  stroke: #9a7e50;
+  stroke-width: 1.5;
+}
+
+.role-emblem .role-field {
+  fill: var(--role-field);
+  stroke: #564737;
+  stroke-width: 1;
+}
+
+.role-emblem .role-rim-glint,
+.role-emblem .role-rim-detail {
+  fill: none;
+  stroke: #c9a66b;
+  stroke-width: 1;
+  stroke-linecap: round;
+}
+
+.role-emblem .role-rim-glint {
+  opacity: .34;
+}
+
+.role-emblem .role-rim-detail {
+  opacity: .65;
+}
+
+.role-emblem .role-symbol {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.role-emblem .role-metal {
+  fill: var(--role-metal);
+  stroke: var(--role-shadow);
+  stroke-width: 1.6;
+}
+
+.role-emblem .role-shade {
+  fill: var(--role-shadow);
+  stroke: var(--role-shadow);
+  stroke-width: 1;
+}
+
+.role-emblem .role-bevel {
+  fill: var(--role-highlight);
+  opacity: .48;
+}
+
+.role-emblem .role-engraving {
+  fill: none;
+  stroke: var(--role-shadow);
+  stroke-width: 1.7;
+}
+
+.role-emblem .role-glint,
+.role-emblem .role-blade-line {
+  fill: none;
+  stroke: var(--role-highlight);
+  stroke-width: 1.3;
+  opacity: .7;
+}
+
+.role-emblem .role-accent {
+  fill: var(--role-accent);
+  stroke: var(--role-shadow);
+  stroke-width: 1.4;
+}
+
+.role-emblem .role-cutout {
+  fill: var(--role-dark);
+  stroke: var(--role-shadow);
+  stroke-width: 1.4;
+}
+
+.role-emblem .role-mask {
+  fill: var(--role-accent);
+  stroke: var(--role-dark);
+  stroke-width: 1.3;
+}
+
+.role-emblem .role-eyes {
+  fill: none;
+  stroke: var(--role-highlight);
+  stroke-width: 2.2;
+}
+
+.role-emblem .role-wand-outline {
+  stroke: var(--role-shadow);
+  stroke-width: 7;
+}
+
+.role-emblem .role-wand {
+  stroke: var(--role-metal);
+  stroke-width: 4.2;
+}
+
+.role-emblem .role-spark {
+  fill: none;
+  stroke: var(--role-metal);
+  stroke-width: 1.9;
+}
+
+.role-emblem .role-spark-dot {
+  fill: var(--role-metal);
+}
+
+.role-emblem .role-cross {
+  fill: none;
+  stroke: var(--role-accent);
+  stroke-width: 3.2;
+}
+
+.role-emblem .role-tie {
+  fill: none;
+  stroke: var(--role-shadow);
+  stroke-width: 2.5;
+}
+
+.role-emblem .role-coin-inset {
+  fill: none;
+  stroke: var(--role-shadow);
+  stroke-width: 1;
+}
+
+.role-emblem .role-sword-grip {
+  fill: none;
+  stroke: var(--role-shadow);
+  stroke-width: 4;
+}
+
+.role-emblem .role-sword-guard {
+  fill: none;
+  stroke: var(--role-metal);
+  stroke-width: 3;
+}
+
+.role-emblem .role-shield-shade {
+  fill: var(--role-dark);
+  opacity: .24;
+}
+
+.role-emblem .role-crest {
+  fill: none;
+  stroke: var(--role-metal);
+  stroke-width: 2.5;
+}
+
+.role-emblem--unknown {
+  color: #d9bd80;
+  line-height: 1;
+  text-align: center;
+}

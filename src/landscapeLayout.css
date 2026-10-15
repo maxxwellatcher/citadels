@@ -1,0 +1,217 @@
+/* A short, wide screen groups the city and its owner into one play area. */
+@media (orientation: landscape) and (max-width: 1100px) and (max-height: 600px) {
+  .game-shell {
+    padding: 5px max(7px, env(safe-area-inset-right)) 7px max(7px, env(safe-area-inset-left));
+  }
+  .game-topbar { min-height: 29px; height: auto; gap: 7px; margin-bottom: 5px; }
+  .brand-mini { gap: 6px; font-size: 15px; }
+  .brand-mini .crest { width: 22px; height: 22px; border-radius: 7px; font-size: 11px; }
+  .round-marker { min-width: 0; gap: 4px 7px; font-size: 9px; }
+  .round-marker b { padding-left: 7px; font-size: 8px; }
+  .round-marker .round-action-hint { flex-basis: auto; max-width: 42vw; white-space: nowrap; font-size: 9px; }
+  .game-room-number { flex: 0 0 auto; gap: 1px; font-size: 9px; }
+  .game-room-number small { font-size: 7px; }
+  .online-table-bar { gap: 5px; margin: 0 0 4px; padding: 2px 6px; font-size: 9px; }
+  .game-shell .online-table-bar > button { min-height: 20px; padding: 2px 6px; font-size: 9px; }
+  .online-table-bar > .connection-chip { padding: 3px 6px; font-size: 8px; }
+
+  .table-world {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 242px;
+    grid-template-areas: 'opponents opponents' 'city hero' 'hand hand';
+    align-items: stretch;
+    gap: 7px 8px;
+    min-height: calc(100dvh - 48px);
+    padding: 7px 8px 8px;
+    border-radius: 15px;
+  }
+  .table-world::before { inset: 4px; border-radius: 11px; }
+  .table-glow { position: absolute; }
+  .game-shell:has(> .online-table-bar) .table-world { min-height: calc(100dvh - 76px); }
+
+  .table-world > .opponent-orbit {
+    grid-area: opponents;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: stretch;
+    gap: 5px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  .opponent-orbit > .orbit-label { display: none; }
+  .opponent-orbit::before { display: none; }
+  .orbit-player {
+    flex: 1 1 0;
+    max-width: 180px;
+    grid-template-columns: 21px minmax(0, 1fr) auto;
+    gap: 2px 4px;
+    padding: 5px 6px;
+    border-radius: 8px;
+  }
+  .orbit-player:hover, .orbit-player.active { transform: none; }
+  .orbit-player.active::after { right: 8px; bottom: -4px; width: 5px; height: 5px; }
+  .orbit-avatar { width: 21px; height: 21px; border-radius: 6px; font-size: 12px; }
+  .orbit-copy strong { font-size: 9px; line-height: 1.2; }
+  .orbit-copy small { margin-top: 2px; font-size: 7px; line-height: 1.15; }
+  .orbit-score { font-size: 8px; white-space: nowrap; }
+  .orbit-stats { gap: 5px; font-size: 8px; line-height: 1.2; }
+  .orbit-city { min-height: 22px; gap: 3px; padding-top: 3px; }
+  .orbit-city:has(> .orbit-city-empty) { min-height: 13px; overflow: visible; }
+  .orbit-city-building { flex-basis: 25px; width: 25px; height: 23px; padding: 1px; }
+  .orbit-city-building > span { font-size: 12px; }
+  .orbit-city-building small { font-size: 6px; }
+  .orbit-city-empty { font-size: 7px; line-height: 1.2; }
+
+  .table-world > .city-stage {
+    grid-area: city;
+    --city-card-width: 68px;
+    min-width: 0;
+    min-height: 124px;
+    max-height: max(124px, calc(100dvh - 235px));
+    padding: 7px 6px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    border-radius: 10px;
+  }
+  .city-stage::before { inset: 4px; border-radius: 7px; }
+  .city-stage .city-lanes { width: 100%; min-width: 0; }
+  .city-lane.my-city .city-buildings { min-height: 98px; padding: 0; gap: 5px; }
+  .city-lane.my-city .city-buildings:has(> .empty-city),
+  .city-lane .city-buildings > .empty-city { min-height: 98px; }
+  .empty-city { font-size: 14px; }
+  .central-building { min-height: 88px; padding: 6px 4px 5px; border-radius: 7px; }
+  .central-building-icon { min-height: 26px; margin: 0 0 4px; font-size: 24px !important; }
+  .city-stage .central-building-icon > .district-emblem { width: 28px; height: 28px; }
+  .central-building-name { font-size: 9px; line-height: 1.25; white-space: normal; }
+  .central-building-cost { margin-top: 4px; font-size: 7px; }
+  .central-building-points { margin-top: 4px; padding: 2px 3px; font-size: 7px; }
+
+  .table-world > .hero-console {
+    grid-area: hero;
+    grid-template-columns: 52px 24px 82px 24px 52px;
+    grid-template-rows: auto;
+    align-self: center;
+    align-items: center;
+    column-gap: 2px;
+    width: 242px;
+    min-height: 124px;
+    margin: 0;
+  }
+  .hero-pedestal { min-width: 0; min-height: 116px; padding-top: 4px; }
+  .hero-avatar, .hero-avatar.has-role { width: 48px; height: 48px; border-radius: 15px; font-size: 26px; }
+  .hero-halo { top: 3px; width: 73px; height: 56px; }
+  .hero-crown { top: -4px; font-size: 17px; }
+  .hero-name { max-width: 100%; margin-top: 5px; }
+  .hero-name strong { max-width: 100%; overflow-wrap: anywhere; font-size: 10px; line-height: 1.2; }
+  .hero-name small { margin-top: 2px; font-size: 8px; }
+  .hero-skill-slot { align-self: start; margin-top: 17px; }
+  .hero-skill-slot .skill-card { width: 26px; min-width: 26px; min-height: 28px; padding: 2px; border-radius: 8px; }
+  .hero-skill-slot.left .skill-card { transform: translateX(11px); }
+  .hero-skill-slot.right .skill-card { transform: translateX(-11px); }
+  .hero-skill-slot .skill-card-icon { width: 20px; height: 20px; border-radius: 6px; font-size: 13px; }
+  .hero-control-slot .role-open-button { width: 50px; min-width: 50px; height: 92px; padding: 3px; border-radius: 8px; }
+  .hero-control-slot .role-open-button .role-thumb-grid {
+    width: 42px;
+    height: 84px;
+    min-height: 84px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(4, minmax(0, 1fr));
+    gap: 3px;
+  }
+  .hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini,
+  .hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini.is-active { min-width: 0; min-height: 0; grid-template-rows: minmax(0, 1fr) 5px; padding: 1px; border-radius: 3px; }
+  .hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini .role-thumb-mini-icon,
+  .hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini.is-active .role-thumb-mini-icon { font-size: 11px; }
+  .hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini .role-thumb-mini-rank,
+  .hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini.is-active .role-thumb-mini-rank { font-size: 5px; line-height: 5px; }
+  .hero-player-stats { width: max-content; justify-self: center; gap: 3px; margin-top: 5px; }
+  .hero-player-stats .coin-pouch, .hero-player-stats .hero-score { min-width: 0; min-height: 24px; padding: 3px 4px; border-radius: 6px; }
+  .hero-player-stats .coin-pouch { gap: 2px; transform: none; }
+  .hero-player-stats .coin-orbit { width: 14px; height: 14px; font-size: 9px; }
+  .hero-player-stats .coin-pouch small, .hero-player-stats .hero-score small { font-size: 7px; }
+  .hero-player-stats .coin-pouch strong, .hero-player-stats .hero-score strong { font-size: 10px; white-space: nowrap; }
+  .hero-end-control { flex-direction: column; align-items: center; gap: 8px; }
+  .hero-end-control .end-turn { width: 51px; min-width: 51px; min-height: 29px; padding: 4px 2px; font-size: 8px; }
+  .district-deck { width: 32px; height: 45px; border-radius: 6px; }
+  .district-deck-back { width: 18px; height: 18px; font-size: 10px; }
+  .district-deck-count { font-size: 8px; }
+
+  .table-world > .hand-tray { grid-area: hand; align-self: end; min-width: 0; margin: 0; padding: 3px 0 0; }
+  .hand-cards { display: flex; flex-wrap: wrap; justify-content: center; align-items: stretch; gap: 5px; min-height: 0; padding: 0; overflow: visible; perspective: none; }
+  .hand-cards > .hand-card, .hand-cards > .hand-income-card {
+    flex: 0 1 76px;
+    width: 76px;
+    min-width: 0;
+    height: auto;
+    min-height: 78px;
+    margin: 0;
+    padding: 6px 5px 5px;
+    border-radius: 7px;
+    transform: none;
+    box-shadow: 1px 4px 6px #0007, inset 0 1px #fff3;
+  }
+  .hand-cards > .hand-card:hover:not(:disabled), .hand-cards > .hand-income-card:hover:not(:disabled) { margin: 0; transform: translateY(-3px); }
+  .hand-cards .hand-card .district-icon { margin: 0 0 4px; font-size: 22px; line-height: 1; }
+  .hand-cards .hand-card .district-icon > .district-emblem { width: 24px; height: 24px; }
+  .hand-cards .hand-card .district-name { overflow: visible; font-size: 9px; line-height: 1.25; white-space: normal; }
+  .hand-cards .hand-card .district-cost { margin-top: 4px; font-size: 7px; line-height: 1.2; }
+  .hand-cards .hand-card .district-points { position: static; align-self: flex-end; margin-top: auto; padding-top: 3px; font-size: 7px; line-height: 1.2; }
+  .hand-cards .hand-income-card > span { width: 24px; height: 24px; margin: 0 0 4px; border-radius: 7px; font-size: 15px; }
+  .hand-cards .hand-income-card > .income-card-mark:has(.income-emblem) { width: 24px; height: 24px; }
+  .hand-cards .hand-income-card b { font-size: 9px; line-height: 1.25; }
+  .hand-cards .hand-income-card small { margin-top: 3px; font-size: 7px; line-height: 1.3; }
+  .hand-cards .hand-income-card em { margin-top: auto; padding-top: 3px; font-size: 7px; line-height: 1.2; }
+
+  .role-modal-backdrop { padding: 8px; }
+  .role-picker-modal { width: min(790px, 100%); max-height: calc(100dvh - 16px); padding: 0; }
+  .role-card-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px; padding: 4px; }
+  .role-card { min-height: clamp(116px, calc((100dvh - 37px) / 2), 158px); padding: 9px 8px 8px; border-radius: 9px; }
+  .role-card-rank { top: 6px; right: 7px; font-size: 9px; }
+  .role-card-icon { margin: 1px 0 5px; font-size: 22px; }
+  .role-picker-modal .role-card-icon > .role-emblem { width: 35px; height: 35px; }
+  .role-card strong { font-size: 12px; line-height: 1.2; }
+  .role-card-back-mark { font-size: 25px; }
+  .role-card-back-label { margin-top: 6px; font-size: 9px; }
+
+  /* Finished-game scores replace the hero and hand without leaving an empty rail. */
+  .table-world:has(> .score-panel) { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'opponents' 'city' 'scores'; }
+  .table-world > .score-panel { grid-area: scores; }
+}
+
+@media (orientation: landscape) and (max-width: 700px) and (max-height: 600px) {
+  .table-world { gap: 6px; padding: 6px; }
+  .orbit-player { padding: 4px; gap: 2px 3px; }
+  .orbit-score { font-size: 7px; }
+  .orbit-stats { gap: 3px; font-size: 7px; }
+  .orbit-copy strong { font-size: 8px; }
+  .orbit-copy small { font-size: 6px; }
+  .hand-cards > .hand-card, .hand-cards > .hand-income-card { flex-basis: 60px; width: 60px; }
+  .table-world > .city-stage { --city-card-width: 60px; }
+}
+
+@media (orientation: landscape) and (max-width: 1100px) and (max-height: 350px) {
+  .table-world { min-height: calc(100dvh - 43px); gap: 5px; padding-block: 5px; }
+  .game-topbar { min-height: 26px; margin-bottom: 4px; }
+  .orbit-player { gap: 1px 3px; padding-block: 3px; }
+  .orbit-city:has(> .orbit-city-empty) { min-height: 10px; padding-top: 2px; }
+  .table-world > .city-stage { min-height: 110px; max-height: max(110px, calc(100dvh - 211px)); padding-block: 5px; }
+  .city-lane.my-city .city-buildings { min-height: 86px; }
+  .city-lane.my-city .city-buildings:has(> .empty-city), .city-lane .city-buildings > .empty-city { min-height: 86px; }
+  .central-building { min-height: 75px; padding-block: 4px; }
+  .central-building-icon { min-height: 21px; margin-bottom: 3px; font-size: 21px !important; }
+  .city-stage .central-building-icon > .district-emblem { width: 24px; height: 24px; }
+  .central-building-cost, .central-building-points { margin-top: 3px; }
+  .table-world > .hero-console { min-height: 110px; }
+  .hero-pedestal { min-height: 106px; }
+  .hero-avatar, .hero-avatar.has-role { width: 44px; height: 44px; }
+  .hero-skill-slot { margin-top: 15px; }
+  .hero-name { margin-top: 4px; }
+  .hand-cards > .hand-card, .hand-cards > .hand-income-card { min-height: 70px; padding-block: 5px; }
+  .hand-cards .hand-card .district-icon { font-size: 19px; }
+  .hand-cards .hand-card .district-icon > .district-emblem { width: 21px; height: 21px; }
+  .hand-cards .hand-income-card > span { width: 21px; height: 21px; }
+  .hand-cards .hand-income-card > .income-card-mark:has(.income-emblem) { width: 21px; height: 21px; }
+}

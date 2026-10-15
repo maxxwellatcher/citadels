@@ -1,0 +1,47 @@
+.ability-emblem {
+  --ability-ink: #20212a;
+  --ability-stone: #d8c5a2;
+  --ability-gold: #bba073;
+  --ability-accent: #927753;
+  --ability-field: #27242a;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  vertical-align: middle;
+  pointer-events: none;
+  user-select: none;
+}
+
+.ability-emblem--assassin { --ability-accent: #b96d62; --ability-field: #302126; }
+.ability-emblem--thief { --ability-stone: #cdd0d5; --ability-accent: #929ba5; --ability-field: #202329; }
+.ability-emblem--magician { --ability-accent: #aa8bc0; --ability-field: #2c2539; }
+.ability-emblem--king { --ability-accent: #d3ae63; --ability-field: #322b1f; }
+.ability-emblem--bishop { --ability-accent: #719cbf; --ability-field: #202a38; }
+.ability-emblem--merchant { --ability-accent: #82a875; --ability-field: #202e29; }
+.ability-emblem--architect { --ability-stone: #d8cbbc; --ability-accent: #c38b61; --ability-field: #30261f; }
+.ability-emblem--warlord { --ability-accent: #b96d62; --ability-field: #352427; }
+
+.ability-emblem-field {
+  fill: var(--ability-field);
+  stroke: var(--ability-gold);
+  stroke-width: 1.5;
+}
+
+.skill-card-icon:has(.ability-emblem) {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.skill-card-icon > .ability-emblem {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.ability-emblem--unknown {
+  color: #d9bd80;
+  text-align: center;
+  line-height: 1;
+}

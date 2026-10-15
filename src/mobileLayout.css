@@ -1,0 +1,194 @@
+/* Small screens keep complete card faces in rows, without a horizontal hand. */
+@media (max-width: 600px), (max-width: 900px) and (max-height: 500px) {
+  .game-shell { padding: 8px 7px 12px; }
+  .game-topbar { height: auto; min-height: 36px; gap: 6px; margin-bottom: 7px; }
+  .brand-mini { flex: 0 0 auto; gap: 7px; font-size: 16px; }
+  .brand-mini .crest { width: 24px; height: 24px; border-radius: 7px; font-size: 12px; }
+  .round-marker { min-width: 0; flex-wrap: wrap; justify-content: center; gap: 3px 6px; font-size: 9px; }
+  .round-marker b { padding-left: 6px; font-size: 8px; }
+  .round-marker .round-action-hint { flex-basis: 100%; max-width: 100%; text-align: center; white-space: normal; font-size: 9px; }
+  .game-room-number { flex: 0 0 auto; font-size: 9px; }
+  .table-world { min-height: 0; padding: 7px 6px 10px; border-radius: 16px; }
+  .table-world::before { inset: 4px; border-radius: 12px; }
+
+  .opponent-orbit { gap: 5px; margin-bottom: 7px; padding: 19px 0 4px; }
+  .opponent-orbit::before { inset: 2px 0; }
+  .orbit-label .eyebrow { font-size: 8px; }
+  .orbit-label small { font-size: 8px; }
+  .orbit-player { grid-template-columns: 24px minmax(0, 1fr) auto; gap: 2px 4px; padding: 5px; border-radius: 8px; }
+  .orbit-avatar { width: 24px; height: 24px; border-radius: 7px; font-size: 12px; }
+  .orbit-copy strong { font-size: 10px; }
+  .orbit-copy small { font-size: 8px; }
+  .orbit-score { font-size: 8px; }
+  .orbit-stats { gap: 5px; font-size: 8px; }
+  .orbit-city { min-height: 22px; padding-top: 3px; gap: 3px; }
+  .orbit-city-building { flex-basis: 28px; width: 28px; height: 25px; }
+  .orbit-city-building span { font-size: 12px; }
+  .orbit-city-building small { font-size: 6px; }
+  .orbit-city-empty { font-size: 7px; }
+  .orbit-city:has(> .orbit-city-empty) { min-height: 15px; overflow: visible; }
+
+  .city-stage { --city-card-width: 84px; min-height: 0; padding: 6px; border-radius: 11px; }
+  .city-stage::before { inset: 4px; border-radius: 8px; }
+  .city-lanes { grid-template-columns: minmax(0, 1fr); }
+  .city-lane.my-city .city-buildings { min-height: 76px; padding: 5px; gap: 5px; overflow: visible; }
+  .city-lane.my-city .city-buildings:has(> .empty-city) { min-height: 66px; }
+  .city-lane .city-buildings > .empty-city { min-height: 66px; font-size: 14px; }
+  .central-building { min-height: 99px; padding: 7px 6px 6px; border-radius: 8px; box-shadow: 0 5px 9px #0007, inset 0 1px #fff3, inset 0 -3px var(--building-accent, #8a7251); }
+  .central-building-icon { min-height: 31px; margin: 2px 0 4px; font-size: 27px !important; }
+  .central-building-name { overflow: visible; font-size: 10px; line-height: 1.3; white-space: normal; }
+  .central-building-cost { margin-top: 4px; font-size: 8px; }
+  .central-building-points { margin-top: 5px; padding: 2px 4px; font-size: 8px; }
+
+  .hero-console { grid-template-columns: 66px 30px 86px 30px 62px; grid-template-rows: auto; column-gap: 3px; width: min(100%, 300px); min-height: 118px; margin-top: 5px; align-items: center; }
+  .hero-pedestal { min-width: 0; min-height: 111px; padding-top: 4px; }
+  .hero-avatar, .hero-avatar.has-role { width: 50px; height: 50px; border-radius: 16px; font-size: 28px; }
+  .hero-halo { width: 78px; height: 60px; top: 1px; }
+  .hero-crown { top: -5px; font-size: 18px; }
+  .hero-name { max-width: 100%; margin-top: 5px; }
+  .hero-name strong { max-width: 100%; overflow-wrap: anywhere; font-size: 10px; line-height: 1.3; }
+  .hero-name small { margin-top: 2px; font-size: 8px; }
+  .hero-control-slot .role-open-button { width: 64px; min-width: 64px; height: 106px; padding: 4px; border-radius: 8px; }
+  .hero-control-slot .role-open-button .role-thumb-grid { width: 54px; height: 96px; min-height: 96px; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(4, minmax(0, 1fr)); gap: 3px; }
+  .hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini,
+  .hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini.is-active { min-width: 0; min-height: 0; grid-template-rows: minmax(0, 1fr) 6px; padding: 1px; border-radius: 3px; }
+  .hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini .role-thumb-mini-icon,
+  .hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini.is-active .role-thumb-mini-icon { font-size: 13px; }
+  .hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini .role-thumb-mini-rank,
+  .hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini.is-active .role-thumb-mini-rank { font-size: 6px; line-height: 6px; }
+  .hero-skill-slot .skill-card { width: 28px; min-width: 28px; min-height: 30px; padding: 2px; border-radius: 8px; }
+  .hero-skill-slot { align-self: start; margin-top: 17px; }
+  .hero-skill-slot.left .skill-card { transform: translateX(14px); }
+  .hero-skill-slot.right .skill-card { transform: translateX(-14px); }
+  .hero-skill-slot .skill-card-icon { width: 22px; height: 22px; border-radius: 6px; font-size: 13px; }
+  .hero-player-stats { gap: 3px; margin-top: 5px; }
+  .hero-player-stats .coin-pouch, .hero-player-stats .hero-score { min-width: 0; min-height: 25px; padding: 3px 4px; border-radius: 6px; }
+  .hero-player-stats .coin-pouch { gap: 2px; transform: none; }
+  .hero-player-stats .coin-orbit { width: 15px; height: 15px; font-size: 9px; }
+  .hero-player-stats .coin-pouch small, .hero-player-stats .hero-score small { font-size: 7px; }
+  .hero-player-stats .coin-pouch strong, .hero-player-stats .hero-score strong { font-size: 10px; white-space: nowrap; }
+  .hero-end-control { flex-direction: column; align-items: center; gap: 7px; }
+  .hero-end-control .end-turn { width: 60px; min-width: 60px; min-height: 27px; padding: 4px 3px; font-size: 8px; }
+  .district-deck { width: 34px; height: 47px; border-radius: 6px; }
+  .district-deck-back { width: 19px; height: 19px; font-size: 10px; }
+  .district-deck-count { font-size: 8px; }
+
+  .hand-tray { margin-top: 4px; padding: 7px 0 0; }
+  .hand-cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); justify-content: stretch; align-items: stretch; gap: 5px; min-height: 0; padding: 0; overflow: visible; perspective: none; }
+  .hand-cards > .hand-card, .hand-cards > .hand-income-card { width: 100%; min-width: 0; min-height: 88px; height: auto; margin: 0; padding: 7px 5px 6px; border-radius: 8px; transform: none; box-shadow: 1px 4px 6px #0007, inset 0 1px #fff3; }
+  .hand-cards > .hand-card:hover:not(:disabled), .hand-cards > .hand-income-card:hover:not(:disabled) { margin: 0; transform: translateY(-3px); }
+  .hand-cards .hand-card .district-icon { margin: 1px 0 6px; font-size: 23px; line-height: 1; }
+  .hand-cards .hand-card .district-name { overflow: visible; font-size: 10px; line-height: 1.25; white-space: normal; }
+  .hand-cards .hand-card .district-cost { margin-top: 5px; font-size: 8px; line-height: 1.2; }
+  .hand-cards .hand-card .district-points { position: static; align-self: flex-end; margin-top: auto; padding-top: 4px; font-size: 8px; line-height: 1.2; }
+  .hand-cards .hand-income-card > span { width: 27px; height: 27px; margin: 0 0 5px; border-radius: 7px; font-size: 16px; }
+  .hand-cards .hand-income-card b { font-size: 10px; line-height: 1.25; }
+  .hand-cards .hand-income-card small { margin-top: 4px; font-size: 8px; line-height: 1.3; }
+  .hand-cards .hand-income-card em { margin-top: auto; padding-top: 3px; font-size: 8px; line-height: 1.2; }
+  .hand-card.hand-drag-ghost, .hand-income-card.hand-drag-ghost { min-width: 0; padding: 7px 5px 6px; border-radius: 8px; }
+  .hand-card.hand-drag-ghost .district-icon { margin: 1px 0 6px; font-size: 23px; line-height: 1; }
+  .hand-card.hand-drag-ghost .district-name { overflow: visible; font-size: 10px; line-height: 1.25; white-space: normal; }
+  .hand-card.hand-drag-ghost .district-cost { margin-top: 5px; font-size: 8px; line-height: 1.2; }
+  .hand-card.hand-drag-ghost .district-points { position: static; align-self: flex-end; margin-top: auto; padding-top: 4px; font-size: 8px; line-height: 1.2; }
+  .hand-income-card.hand-drag-ghost > span { width: 27px; height: 27px; margin: 0 0 5px; border-radius: 7px; font-size: 16px; }
+  .hand-income-card.hand-drag-ghost b { font-size: 10px; line-height: 1.25; }
+  .hand-income-card.hand-drag-ghost small { margin-top: 4px; font-size: 8px; line-height: 1.3; }
+  .hand-income-card.hand-drag-ghost em { margin-top: auto; padding-top: 3px; font-size: 8px; line-height: 1.2; }
+
+  .role-modal-backdrop { padding: 10px; }
+  .role-picker-modal { width: 100%; max-height: calc(100dvh - 20px); padding: 0; }
+  .role-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; padding: 4px; }
+  .role-card { min-height: clamp(120px, calc((100dvh - 50px) / 4), 148px); padding: 9px 8px 8px; border-radius: 9px; }
+  .role-card-rank { top: 6px; right: 7px; font-size: 9px; }
+  .role-card-icon { margin: 1px 0 5px; font-size: 22px; }
+  .role-card strong { font-size: 12px; line-height: 1.2; }
+  .role-card small { margin-top: 4px; font-size: 9px; line-height: 1.4; }
+  .role-card-back-mark { font-size: 25px; }
+  .role-card-back-label { margin-top: 6px; font-size: 9px; }
+  .online-table-bar { gap: 5px; margin-bottom: 5px; padding: 5px 6px; }
+}
+
+@media (min-width: 480px) and (max-width: 600px) {
+  .hand-cards { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+
+@media (min-width: 350px) and (max-width: 479px) {
+  .hand-cards { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
+
+@media (max-width: 600px) and (max-height: 650px) and (orientation: portrait) {
+  .game-shell { padding-top: 5px; }
+  .game-topbar { min-height: 32px; margin-bottom: 5px; }
+  .opponent-orbit { padding-top: 16px; gap: 4px; margin-bottom: 5px; }
+  .orbit-player { grid-template-columns: 21px minmax(0, 1fr) auto; gap: 1px 3px; padding: 4px; }
+  .orbit-avatar { width: 21px; height: 21px; font-size: 11px; }
+  .orbit-copy strong { font-size: 9px; line-height: 11px; }
+  .orbit-copy small { margin-top: 1px; font-size: 7px; line-height: 9px; }
+  .orbit-score { font-size: 7px; }
+  .orbit-stats { font-size: 7px; line-height: 9px; }
+  .orbit-city:has(> .orbit-city-empty) { min-height: 12px; padding-top: 2px; }
+  .orbit-city-empty { font-size: 7px; line-height: 8px; }
+  .city-stage { padding: 4px; }
+  .city-lane.my-city .city-buildings { min-height: 62px; padding: 4px; }
+  .city-lane.my-city .city-buildings:has(> .empty-city),
+  .city-lane .city-buildings > .empty-city { min-height: 48px; }
+  .central-building { min-height: 84px; padding: 6px 5px 5px; }
+  .central-building-icon { min-height: 24px; margin: 1px 0 3px; font-size: 23px !important; }
+  .central-building-cost { margin-top: 3px; }
+  .central-building-points { margin-top: 3px; }
+  .hero-console { min-height: 101px; margin-top: 4px; }
+  .hero-pedestal { min-height: 101px; padding-top: 3px; }
+  .hero-avatar, .hero-avatar.has-role { width: 42px; height: 42px; border-radius: 14px; font-size: 25px; }
+  .hero-halo { width: 69px; height: 51px; }
+  .hero-name { margin-top: 4px; }
+  .hero-name strong { font-size: 9px; }
+  .hero-player-stats { margin-top: 4px; }
+  .hero-player-stats .coin-pouch, .hero-player-stats .hero-score { min-height: 23px; padding-top: 2px; padding-bottom: 2px; }
+  .hero-control-slot .role-open-button { height: 88px; }
+  .hero-control-slot .role-open-button .role-thumb-grid { height: 78px; min-height: 78px; gap: 2px; }
+  .hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini .role-thumb-mini-icon,
+  .hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini.is-active .role-thumb-mini-icon { font-size: 11px; }
+  .hero-skill-slot { margin-top: 14px; }
+  .hero-skill-slot.left .skill-card { transform: translateX(17px); }
+  .hero-skill-slot.right .skill-card { transform: translateX(-17px); }
+  .hand-tray { padding-top: 5px; }
+  .hand-cards > .hand-card, .hand-cards > .hand-income-card,
+  .hand-card.hand-drag-ghost, .hand-income-card.hand-drag-ghost { min-height: 74px; padding-top: 5px; padding-bottom: 5px; }
+  .hand-cards .hand-card .district-icon,
+  .hand-card.hand-drag-ghost .district-icon { margin-bottom: 4px; font-size: 19px; }
+  .hand-cards .hand-card .district-cost,
+  .hand-card.hand-drag-ghost .district-cost { margin-top: 3px; }
+  .hand-cards .hand-card .district-points,
+  .hand-card.hand-drag-ghost .district-points { padding-top: 3px; }
+  .hand-cards .hand-income-card > span,
+  .hand-income-card.hand-drag-ghost > span { width: 22px; height: 22px; margin-bottom: 4px; font-size: 14px; }
+  .hand-cards .hand-income-card small,
+  .hand-income-card.hand-drag-ghost small { margin-top: 3px; }
+}
+
+@media (max-width: 340px) {
+  .game-shell { padding-left: 5px; padding-right: 5px; }
+  .brand-mini { gap: 5px; font-size: 14px; }
+  .brand-mini .crest { width: 21px; height: 21px; }
+  .game-room-number { font-size: 8px; }
+  .hero-console { grid-template-columns: 64px 28px 84px 28px 60px; column-gap: 3px; }
+  .hero-control-slot .role-open-button { width: 62px; min-width: 62px; }
+  .hero-control-slot .role-open-button .role-thumb-grid { width: 52px; }
+  .hero-end-control .end-turn { width: 58px; min-width: 58px; }
+  .hand-cards { gap: 4px; }
+  .hand-cards > .hand-card, .hand-cards > .hand-income-card { padding-left: 4px; padding-right: 4px; }
+  .hand-card.hand-drag-ghost, .hand-income-card.hand-drag-ghost { padding-left: 4px; padding-right: 4px; }
+  .role-modal-backdrop { padding: 7px; }
+  .role-picker-modal { max-height: calc(100dvh - 14px); }
+  .role-card { padding: 8px 7px; }
+}
+
+@media (min-width: 601px) and (max-width: 900px) and (max-height: 500px) {
+  .game-shell { padding: 6px 10px 10px; }
+  .opponent-orbit { grid-template-columns: repeat(auto-fit, minmax(116px, 1fr)); }
+  .hero-console { width: min(520px, 100%); }
+  .hand-cards { grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 6px; }
+  .role-picker-modal { width: min(780px, 100%); }
+  .role-card-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .role-card { min-height: 155px; }
+}

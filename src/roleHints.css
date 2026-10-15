@@ -1,0 +1,52 @@
+.role-card[data-role-hint] {
+  touch-action: manipulation;
+}
+
+.role-card[data-role-hint],
+.skill-card[data-skill-detail],
+.orbit-city-building[data-district-detail] {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.role-card-hint.district-card-hint {
+  width: 228px;
+  padding: 15px;
+  align-items: flex-start;
+  border-color: var(--district-color, #957349);
+  border-radius: 12px;
+  white-space: normal;
+  box-shadow: 0 14px 30px #000b, inset 0 1px #fff3, inset 0 -3px var(--district-color, #957349);
+}
+.district-card-hint .district-icon { margin: 0 0 9px; font-size: 35px; line-height: 1.1; }
+.district-hint-name { color: var(--cream, #f4ebd6); font-size: 15px; line-height: 1.35; }
+.district-hint-type { margin-top: 3px; color: var(--muted, #b5abb5); font-size: 10px; }
+.district-hint-stats { margin-top: 9px; color: var(--gold-bright, #e5c27d); font-size: 11px; }
+.district-hint-description { margin-top: 9px; padding-top: 9px; border-top: 1px solid #ffffff18; color: var(--cream, #f4ebd6); font-size: 11px; line-height: 1.65; }
+
+.role-card-hint {
+  position: fixed;
+  z-index: 160;
+  box-sizing: border-box;
+  width: max-content;
+  max-width: min(320px, calc(100vw - 24px));
+  max-height: calc(100dvh - 24px);
+  overflow: hidden;
+  padding: 10px 13px;
+  border: 1px solid #957349;
+  border-radius: 9px;
+  background: linear-gradient(145deg, #352a29, #161720);
+  box-shadow: 0 10px 26px #000a, inset 0 1px #fff2;
+  color: var(--cream, #f4ebd6);
+  font-size: 12px;
+  line-height: 1.65;
+  text-align: left;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+  pointer-events: none;
+  animation: role-hint-appear .14s ease-out;
+}
+
+@keyframes role-hint-appear { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .role-card-hint { animation: none; } }

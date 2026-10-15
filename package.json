@@ -1,0 +1,21 @@
+{
+  "name": "citadels-web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && tsc -p tsconfig.server.json && vite build",
+    "preview": "vite preview",
+    "test": "tsc -p tsconfig.server.json && node --test tests/game.test.mjs tests/server.test.mjs tests/online.test.mjs",
+    "online": "tsc -p tsconfig.server.json && node server/index.mjs",
+    "start": "npm run build && node server/index.mjs"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "vite": "^6.0.0"
+  },
+  "dependencies": {
+    "ws": "^8.22.0"
+  }
+}

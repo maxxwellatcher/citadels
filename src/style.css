@@ -1,0 +1,2039 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --ink: #0a0c12;
+  --night: #10131c;
+  --table: #171b25;
+  --table-deep: #0e1119;
+  --wood: #5b3828;
+  --wood-light: #9a6942;
+  --cream: #f4ebd6;
+  --muted: #a6a9b8;
+  --dim: #74798c;
+  --line: #4a3d3a;
+  --gold: #e5b762;
+  --gold-bright: #f4d18b;
+  --blue: #6ba6d6;
+  --red: #d36c61;
+  --green: #72b28a;
+  --yellow: #d8ad55;
+  --purple: #ae88cb;
+  font-family: Manrope, 'Microsoft YaHei', sans-serif;
+  color: var(--cream);
+  font-synthesis: none;
+}
+
+* { box-sizing: border-box; }
+html, body, #app { min-width: 320px; min-height: 100%; margin: 0; }
+body { background: radial-gradient(circle at 50% -20%, #343047 0, transparent 48%), var(--ink); overflow-x: hidden; }
+button, input { font: inherit; }
+button { color: inherit; }
+
+.shell { width: min(1480px, 100%); margin: 0 auto; padding: 18px 28px 28px; }
+.game-shell { min-height: 100dvh; }
+.eyebrow { color: var(--gold); font: 500 10px/1.2 'DM Mono', monospace; letter-spacing: .18em; text-transform: uppercase; }
+h1, h2, h3, p { margin: 0; }
+.full { width: 100%; }
+
+/* Setup */
+.setup-shell { display: grid; place-items: center; align-content: center; gap: 26px; min-height: 100dvh; max-width: 760px; }
+.brand-lockup { text-align: center; }
+.crest { display: grid; place-items: center; width: 35px; height: 35px; border: 1px solid var(--gold); border-radius: 10px; color: var(--gold-bright); font-size: 16px; transform: rotate(45deg); box-shadow: 0 0 0 5px #251e27, 0 10px 25px #0007; }
+.crest.large { width: 62px; height: 62px; margin: 0 auto 22px; border-radius: 18px; font-size: 27px; box-shadow: 0 0 0 8px #251e27, 0 15px 35px #0008; }
+.brand-lockup h1 { margin: 20px 0 8px; color: var(--cream); font: 700 clamp(48px, 8vw, 80px)/.95 Fraunces, serif; letter-spacing: -.06em; }
+.lead { color: var(--muted); font-size: 14px; }
+.setup-card { width: min(540px, 100%); padding: 28px; border: 1px solid #5e4738; border-radius: 18px; background: linear-gradient(145deg, #29202a, #171821); box-shadow: 0 22px 70px #0008, inset 0 1px #ffffff12; }
+.setup-heading { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 24px; }
+.setup-heading h2 { margin-top: 7px; font: 700 26px Fraunces, serif; }
+.player-count { padding: 7px 11px; border: 1px solid #86633d; border-radius: 99px; color: var(--gold-bright); font: 500 11px 'DM Mono', monospace; }
+.setup-card label { display: grid; grid-template-columns: 1fr auto; gap: 11px; margin: 20px 0; color: var(--muted); font-size: 13px; }
+.setup-card label strong { color: var(--gold-bright); font: 500 13px 'DM Mono', monospace; }
+.setup-card input { grid-column: 1/-1; width: 100%; accent-color: var(--gold); }
+.setup-note { display: flex; gap: 12px; align-items: flex-start; margin: 22px 0; padding: 13px; border: 1px solid #4a3740; border-radius: 11px; background: #11141c; color: var(--muted); font-size: 12px; line-height: 1.6; }
+.setup-note span { color: var(--gold); font-size: 24px; line-height: 1; }
+.primary, .icon-btn, .action-button, .role-chip, .city-building, .district-card, .skill-orb { cursor: pointer; }
+.primary { border: 1px solid #f1ca7c; border-radius: 9px; padding: 13px 16px; background: linear-gradient(#f2c875, #bc8740); color: #1c1510; font-weight: 800; box-shadow: inset 0 1px #fff8, 0 5px 12px #0005; transition: transform .18s, filter .18s; }
+.primary:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.fine-print { color: var(--dim); font: 10px 'DM Mono', monospace; letter-spacing: .06em; }
+
+/* Top chrome */
+.game-topbar { display: flex; height: 48px; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.brand-mini { display: flex; align-items: center; gap: 12px; font: 700 22px Fraunces, serif; }
+.round-marker { display: flex; align-items: center; gap: 13px; color: var(--muted); font-size: 12px; }
+.round-marker b { padding-left: 13px; border-left: 1px solid #584744; color: var(--gold-bright); font: 500 11px 'DM Mono', monospace; }
+.icon-btn { display: grid; place-items: center; width: 37px; height: 37px; border: 1px solid #554a54; border-radius: 50%; background: #191a25; color: var(--gold); font-size: 20px; transition: .2s; }
+.icon-btn:hover { border-color: var(--gold); transform: rotate(-35deg); }
+
+/* Table world */
+.table-world { position: relative; isolation: isolate; min-height: calc(100dvh - 78px); padding: 15px 18px 24px; border: 1px solid #77533a; border-radius: 22px; background: radial-gradient(ellipse at 50% 34%, #2a2c35 0, #1a1d26 45%, #11141b 100%); box-shadow: 0 28px 70px #0009, inset 0 1px #fff1, inset 0 -10px 30px #0005; overflow: visible; }
+.table-world::before { position: absolute; inset: 6px; z-index: -1; border: 1px solid #b27a4428; border-radius: 17px; content: ''; pointer-events: none; }
+.table-world::after { position: absolute; inset: 0; z-index: -2; border-radius: 22px; background: repeating-linear-gradient(102deg, transparent 0 7px, #b4773510 8px 9px, transparent 10px 20px); content: ''; mix-blend-mode: screen; opacity: .33; pointer-events: none; }
+.table-glow { position: absolute; z-index: -1; top: 8%; left: 50%; width: 70%; height: 45%; transform: translateX(-50%); border-radius: 50%; background: #c19f6412; filter: blur(35px); pointer-events: none; }
+
+/* Players around the table */
+.opponent-orbit { position: relative; display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); gap: 10px; width: min(960px, 100%); margin: 0 auto 12px; padding: 26px 18px 10px; }
+.opponent-orbit::before { position: absolute; inset: 3px 4%; border: 1px solid #b78b4e38; border-radius: 50% 50% 40% 40%; box-shadow: 0 0 26px #c19b5322, inset 0 -12px 20px #0002; content: ''; pointer-events: none; }
+.orbit-label { position: absolute; top: 0; left: 50%; z-index: 1; display: flex; gap: 8px; align-items: baseline; transform: translateX(-50%); white-space: nowrap; }
+.orbit-label small { color: var(--dim); font-size: 10px; }
+.orbit-player { position: relative; display: grid; grid-template-columns: 34px 1fr auto; grid-template-rows: auto auto; align-items: center; gap: 3px 8px; min-width: 0; padding: 8px 10px; border: 1px solid #383742; border-radius: 10px; background: linear-gradient(150deg, #282631, #171922); box-shadow: 0 7px 14px #0005, inset 0 1px #fff0b; transition: transform .2s, border-color .2s; }
+.orbit-player:hover, .orbit-player.active { border-color: #d5a65c; transform: translateY(-3px); }
+.orbit-player.active::after { position: absolute; right: 9px; bottom: -5px; width: 7px; height: 7px; border-right: 1px solid var(--gold); border-bottom: 1px solid var(--gold); background: #292631; transform: rotate(45deg); content: ''; }
+.orbit-avatar, .avatar { display: grid; place-items: center; width: 32px; height: 32px; border: 1px solid #71615b; border-radius: 9px; background: #34323a; color: #d9d1bd; font-size: 14px; }
+.orbit-player.human .orbit-avatar { border-color: var(--gold); background: #725033; color: #ffe4a7; }
+.orbit-copy { min-width: 0; }
+.orbit-copy strong, .orbit-copy small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.orbit-copy strong { font-size: 11px; }
+.orbit-copy small { margin-top: 2px; color: var(--muted); font-size: 9px; }
+.orbit-score { color: var(--gold); font: 500 10px 'DM Mono', monospace; }
+.orbit-stats { grid-column: 1/-1; display: flex; gap: 8px; color: var(--dim); font: 9px 'DM Mono', monospace; }
+.orbit-city { grid-column: 1/-1; display: flex; min-width: 0; align-items: center; gap: 4px; min-height: 34px; overflow-x: auto; padding: 4px 0 0; border-top: 1px solid #3a3540; }
+.orbit-city-building { display: grid; flex: 0 0 38px; place-items: center; gap: 1px; width: 38px; height: 32px; padding: 2px; border: 1px solid #56535a; border-radius: 6px; background: linear-gradient(145deg, #3b3941, #24252c); box-shadow: 0 3px 4px #0005, inset 0 1px #fff2; cursor: pointer; transition: transform .16s, border-color .16s; }
+.orbit-city-building:hover { border-color: var(--gold-bright); transform: translateY(-2px); }
+.orbit-city-building span { font-size: 15px; line-height: 1; }
+.orbit-city-building small { max-width: 100%; overflow: hidden; color: #cfc8ba; font-size: 6px; text-overflow: ellipsis; white-space: nowrap; }
+.orbit-city-building.blue { box-shadow: inset 0 -2px var(--blue), 0 3px 4px #0005; }.orbit-city-building.red { box-shadow: inset 0 -2px var(--red), 0 3px 4px #0005; }.orbit-city-building.green { box-shadow: inset 0 -2px var(--green), 0 3px 4px #0005; }.orbit-city-building.yellow { box-shadow: inset 0 -2px var(--yellow), 0 3px 4px #0005; }.orbit-city-building.purple { box-shadow: inset 0 -2px var(--purple), 0 3px 4px #0005; }
+.orbit-city-empty { color: var(--dim); font: 8px 'DM Mono', monospace; }
+
+/* Role ring */
+.role-rail { margin: 0 auto 13px; padding: 9px 13px 11px; border: 1px solid #4e4140; border-radius: 13px; background: #151721aa; box-shadow: inset 0 1px #fff1; }
+.rail-title { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.rail-title small { color: var(--dim); font-size: 10px; }
+.role-icons { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 7px; }
+.role-chip { position: relative; display: grid; place-items: center; min-width: 0; height: 58px; padding: 3px 3px 2px; border: 1px solid #5b4b47; border-radius: 9px; background: linear-gradient(145deg, #3a3440, #1c1d28); box-shadow: inset 0 1px #fff2, 0 5px 7px #0005; transition: .2s; }
+.role-chip:hover, .role-chip.current { border-color: var(--gold); background: linear-gradient(145deg, #554235, #29232b); transform: translateY(-2px); }
+.role-chip.chosen { border-color: #72907f; }
+.role-chip.removed { opacity: .36; filter: saturate(.4); }
+.role-chip span { font-size: 24px; line-height: 1; }
+.role-chip b { position: absolute; right: 4px; bottom: 4px; color: var(--gold); font: 500 9px 'DM Mono', monospace; }
+.role-chip small { max-width: 100%; overflow: hidden; color: #d8cfc0; font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Center district table */
+.city-stage { position: relative; min-height: 215px; padding: 16px 17px 14px; border: 1px solid #5f5148; border-radius: 15px; background: linear-gradient(150deg, #25262c, #17191f 70%); box-shadow: inset 0 1px #fff2, inset 0 -14px 20px #0003, 0 9px 17px #0005; }
+.city-stage::before { position: absolute; inset: 7px; border: 1px dashed #b1875635; border-radius: 10px; content: ''; pointer-events: none; }
+.stage-header { position: relative; display: flex; align-items: end; justify-content: space-between; margin-bottom: 10px; }
+.stage-header h1 { margin-top: 4px; font: 700 27px Fraunces, serif; letter-spacing: -.035em; }
+.stage-rule { color: var(--dim); font: 10px 'DM Mono', monospace; }
+.city-lanes { position: relative; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px; }
+.city-lane { min-width: 0; padding: 8px 9px 9px; border: 1px solid #403e42; border-radius: 9px; background: #11141caa; }
+.city-lane.my-city { padding: 0; border: 0; background: transparent; box-shadow: none; }
+.city-lane.my-city .city-buildings { justify-content: center; min-height: 182px; }
+.city-lane-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 7px; }
+.lane-name { display: flex; align-items: center; min-width: 0; gap: 6px; overflow: hidden; color: #d8d3c7; font-size: 10px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+.lane-avatar { display: grid; place-items: center; width: 19px; height: 19px; border: 1px solid #79614c; border-radius: 6px; background: #3a3029; color: var(--gold); font-size: 9px; font-style: normal; }
+.lane-meta { color: var(--dim); font: 9px 'DM Mono', monospace; white-space: nowrap; }
+.city-buildings { display: flex; min-height: 54px; align-items: center; gap: 5px; overflow-x: auto; padding: 2px 1px; }
+.city-building { display: grid; flex: 0 0 48px; place-items: center; gap: 1px; min-height: 50px; padding: 3px; border: 1px solid #56535a; border-radius: 7px; background: linear-gradient(145deg, #3b3941, #24252c); box-shadow: 0 4px 5px #0005, inset 0 2px 0 #fff2; transition: transform .16s, border-color .16s; }
+.city-building:hover { border-color: var(--gold-bright); transform: translateY(-4px) rotateX(8deg); }
+.city-building span { font-size: 22px; line-height: 1; }
+.city-building small { max-width: 100%; overflow: hidden; color: #cfc8ba; font-size: 8px; text-overflow: ellipsis; white-space: nowrap; }
+.city-building.blue { box-shadow: inset 0 -3px var(--blue), 0 4px 5px #0005; }.city-building.red { box-shadow: inset 0 -3px var(--red), 0 4px 5px #0005; }.city-building.green { box-shadow: inset 0 -3px var(--green), 0 4px 5px #0005; }.city-building.yellow { box-shadow: inset 0 -3px var(--yellow), 0 4px 5px #0005; }.city-building.purple { box-shadow: inset 0 -3px var(--purple), 0 4px 5px #0005; }
+.empty-city, .empty-hand { color: var(--dim); font-size: 10px; }
+
+/* The player's district lane is the visible city board.  Its cards carry the
+   same color stripe as hand cards while exposing the full building details. */
+.city-lane.my-city .city-buildings {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 132px));
+  justify-content: center;
+  align-content: center;
+  gap: 12px;
+  min-height: 202px;
+  overflow: auto;
+  padding: 12px 15px;
+}
+.central-building {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-height: 154px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 0;
+  padding: 12px 10px 10px;
+  overflow: hidden;
+  border: 1px solid #75624d;
+  border-radius: 11px;
+  background: linear-gradient(145deg, #4a4038 0%, #2d2a30 58%, #1b1c23 100%);
+  box-shadow: 0 10px 18px #0008, inset 0 1px #fff4, inset 0 -4px var(--building-accent, #8a7251);
+  color: var(--cream);
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform .18s, border-color .18s, filter .18s, box-shadow .18s;
+}
+.central-building::before {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  left: 10px;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: var(--building-accent, var(--gold));
+  content: '';
+}
+.central-building::after {
+  position: absolute;
+  inset: 1px;
+  border: 1px solid #ffffff08;
+  border-radius: 10px;
+  content: '';
+  pointer-events: none;
+}
+.central-building:hover {
+  border-color: var(--gold-bright);
+  box-shadow: 0 15px 24px #000a, inset 0 1px #fff5, inset 0 -4px var(--building-accent, #8a7251);
+  filter: brightness(1.08);
+  transform: translateY(-5px) rotateX(5deg);
+}
+.central-building.blue { --building-accent: var(--blue); }
+.central-building.red { --building-accent: var(--red); }
+.central-building.green { --building-accent: var(--green); }
+.central-building.yellow { --building-accent: var(--yellow); }
+.central-building.purple { --building-accent: var(--purple); }
+.central-building-icon {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 53px;
+  margin: 5px 0 7px;
+  color: #f8e3b4;
+  font-size: 40px !important;
+  line-height: 1;
+  text-shadow: 0 4px 6px #0009;
+}
+.central-building-name {
+  width: 100%;
+  overflow: hidden;
+  color: #f3ead9;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.central-building-cost {
+  display: block;
+  margin-top: 6px;
+  color: var(--gold-bright);
+  font: 500 9px/1.2 'DM Mono', monospace;
+}
+.central-building-points {
+  display: block;
+  align-self: flex-end;
+  margin-top: auto;
+  padding: 3px 5px;
+  border: 1px solid #8f754f66;
+  border-radius: 5px;
+  background: #15151c99;
+  color: var(--building-accent, var(--gold));
+  font: 500 9px/1.1 'DM Mono', monospace;
+}
+.empty-city {
+  display: grid;
+  place-items: center;
+  align-self: stretch;
+  min-height: 174px;
+  width: 100%;
+  color: #c9ad74;
+  font: 700 17px/1 Fraunces, serif;
+  letter-spacing: .16em;
+  text-shadow: 0 3px 8px #0009;
+}
+
+/* Actions and hero */
+.action-strip { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin: 13px 0 8px; padding: 10px 13px; border: 1px solid #4d423d; border-radius: 12px; background: linear-gradient(90deg, #181a23, #242126, #181a23); box-shadow: inset 0 1px #fff1; }
+.turn-status { display: flex; align-items: center; min-width: 0; gap: 9px; }
+.turn-status > div { min-width: max-content; }.turn-status small, .turn-status strong { display: block; }.turn-status small { color: var(--gold); font: 9px 'DM Mono', monospace; }.turn-status strong { margin-top: 2px; font-size: 13px; }.turn-status p { max-width: 270px; margin-left: 7px; overflow: hidden; color: var(--muted); font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+.status-dot { width: 8px; height: 8px; border: 1px solid #6f6970; border-radius: 50%; background: #443f45; }.status-dot.live { border-color: var(--gold); background: var(--gold); box-shadow: 0 0 9px var(--gold); }
+.action-buttons { display: flex; gap: 7px; }.action-button { display: grid; grid-template-columns: 24px 1fr; grid-template-rows: 1fr 1fr; align-items: center; min-width: 115px; padding: 6px 9px; border: 1px solid #504851; border-radius: 8px; background: #292831; text-align: left; transition: .16s; }.action-button:hover:not(:disabled) { border-color: var(--gold); transform: translateY(-2px); }.action-button:disabled { cursor: default; opacity: .4; }.action-button > span { grid-row: 1/-1; font-size: 19px; }.action-button b { font-size: 10px; }.action-button small { color: var(--dim); font: 9px 'DM Mono', monospace; }.action-button.gold { border-color: #80603c; }.action-button.blue { border-color: #4d6377; }.action-button.ghost { border-color: #54515b; }
+.turn-status .role-open-button { width: auto; min-width: 92px; margin-left: 2px; padding: 6px 8px; gap: 7px; border-radius: 8px; }
+.turn-status .role-open-button .role-open-icon { width: 23px; height: 23px; border-radius: 6px; font-size: 13px; }
+.turn-status .role-open-button b { font-size: 10px; white-space: nowrap; }
+.turn-status .role-open-button small { display: none; }
+.turn-status .role-open-arrow { font-size: 15px; }
+
+/* Income choices use the same lifted card language as the hand and role cards. */
+.income-card { position: relative; display: grid; grid-template-columns: 34px 1fr; grid-template-rows: auto auto; align-items: center; min-width: 132px; min-height: 62px; padding: 8px 10px; overflow: hidden; border: 1px solid #665442; border-radius: 10px; background: linear-gradient(145deg, #40362f, #211e25 70%); box-shadow: 3px 7px 10px #0007, inset 0 1px #fff3; text-align: left; cursor: pointer; transition: transform .18s, border-color .18s, filter .18s, opacity .18s; }
+.income-card::before { position: absolute; top: 0; right: 9px; left: 9px; height: 3px; border-radius: 0 0 3px 3px; background: var(--gold); content: ''; }
+.income-card.gold { border-color: #80603c; background: linear-gradient(145deg, #4b392a, #211d22 72%); }.income-card.gold::before { background: var(--gold-bright); }
+.income-card.blue { border-color: #4d6377; background: linear-gradient(145deg, #303d4c, #1b1d26 72%); }.income-card.blue::before { background: var(--blue); }
+.income-card.coins { border-color: #80603c; background: linear-gradient(145deg, #4b392a, #211d22 72%); }.income-card.coins::before { background: var(--gold-bright); }
+.income-card.cards { border-color: #4d6377; background: linear-gradient(145deg, #303d4c, #1b1d26 72%); }.income-card.cards::before { background: var(--blue); }
+.income-card:hover:not(:disabled) { border-color: var(--gold-bright); transform: translateY(-3px) rotateX(3deg); }
+.income-card:active:not(:disabled) { transform: translateY(-1px); }
+.income-card:disabled, .income-card.used { cursor: default; filter: saturate(.3); opacity: .34; transform: none; }
+.income-card.discarded { opacity: .18; filter: grayscale(1) saturate(.15); }
+.income-card > span { grid-row: 1 / -1; display: grid; place-items: center; width: 27px; height: 39px; border: 1px solid #bb8d4a; border-radius: 6px; background: #61472c; color: var(--gold-bright); font-size: 19px; box-shadow: inset 0 1px #fff3, 2px 3px 4px #0005; }
+.income-card.blue > span { border-color: #6684a0; background: #304b63; color: #c9e8ff; }
+.income-card.cards > span { border-color: #6684a0; background: #304b63; color: #c9e8ff; }
+.income-card b, .income-card small, .income-card em { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }.income-card b { font-size: 10px; }.income-card small { margin-top: 4px; color: var(--muted); font: 9px 'DM Mono', monospace; }.income-card em { grid-column: 2; margin-top: 3px; color: var(--gold); font: 8px 'DM Mono', monospace; font-style: normal; }
+
+/* Each role exposes two actions while sharing one ability-used lock. */
+.skill-card-group { display: flex; min-width: 0; flex-direction: column; gap: 6px; }.skill-card-group.left { align-items: flex-end; }.skill-card-group.right { align-items: flex-start; }
+.skill-card { position: relative; display: flex; align-items: center; width: min(190px, 100%); min-height: 45px; gap: 8px; padding: 7px 9px; border: 1px solid #5b4e4a; border-radius: 10px; background: linear-gradient(145deg, #343039, #1a1b24); box-shadow: 0 6px 10px #0006, inset 0 1px #fff2; text-align: left; cursor: pointer; transition: transform .16s, border-color .16s, opacity .16s, filter .16s; }.skill-card.left { justify-self: end; }.skill-card.right { justify-self: start; }
+.skill-card::before { position: absolute; top: 0; right: 9px; left: 9px; height: 2px; border-radius: 0 0 3px 3px; background: var(--gold); content: ''; }
+.skill-card:hover:not(:disabled) { border-color: var(--gold-bright); transform: translateY(-2px); }.skill-card:disabled, .skill-card.used { cursor: default; filter: saturate(.25); opacity: .38; transform: none; }
+.skill-card-icon { display: grid; flex: 0 0 auto; place-items: center; width: 29px; height: 29px; border: 1px solid #a27643; border-radius: 8px; background: #4e3929; font-size: 16px; }.skill-card-copy { min-width: 0; }.skill-card-copy small, .skill-card-copy b, .skill-card-copy em { display: block; }.skill-card-copy small { color: var(--gold); font: 8px 'DM Mono', monospace; }.skill-card-copy b { margin-top: 2px; overflow: hidden; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }.skill-card-copy em { margin-top: 2px; overflow: hidden; color: var(--muted); font-size: 8px; font-style: normal; line-height: 1.25; text-overflow: ellipsis; white-space: nowrap; }.skill-card-state { margin-left: auto; color: var(--gold); font: 8px 'DM Mono', monospace; }
+.hero-console { position: relative; display: grid; grid-template-columns: 1fr 152px 1fr; align-items: center; gap: 22px; width: min(600px, 100%); min-height: 106px; margin: 0 auto; }
+.hero-pedestal { position: relative; display: grid; justify-items: center; align-content: center; min-height: 106px; }.hero-halo { position: absolute; top: 4px; width: 100px; height: 80px; border: 1px solid #d3a25990; border-radius: 50%; background: radial-gradient(circle, #cf9c4630, transparent 65%); box-shadow: 0 0 20px #d6a85434; transform: perspective(100px) rotateX(48deg); }.hero-avatar { position: relative; z-index: 1; display: grid; place-items: center; width: 62px; height: 62px; border: 2px solid var(--gold); border-radius: 19px; background: radial-gradient(circle at 35% 28%, #755734, #2c211a 70%); box-shadow: 0 7px 11px #0008, inset 0 1px #fff5; color: #ffe4a2; font-size: 27px; }.hero-crown { position: absolute; top: -8px; z-index: 2; color: var(--gold-bright); font-size: 24px; text-shadow: 0 2px 4px #000; }.hero-name { position: relative; z-index: 1; display: grid; justify-items: center; margin-top: 6px; }.hero-name strong { font-size: 12px; }.hero-name small { margin-top: 2px; color: var(--gold); font: 9px 'DM Mono', monospace; }
+.skill-orb { display: flex; align-items: center; gap: 9px; min-width: 0; padding: 10px; border: 1px solid #5b4e4a; border-radius: 11px; background: linear-gradient(145deg, #343039, #1a1b24); box-shadow: 0 7px 12px #0006, inset 0 1px #fff2; text-align: left; }.skill-orb:disabled { cursor: default; opacity: 1; }.skill-orb.left { justify-self: end; }.skill-orb.right { justify-self: start; }.skill-icon { display: grid; flex: 0 0 auto; place-items: center; width: 36px; height: 36px; border: 1px solid #a27643; border-radius: 10px; background: #4e3929; font-size: 21px; }.skill-copy { min-width: 0; }.skill-copy small, .skill-copy b { display: block; }.skill-copy small { color: var(--gold); font: 9px 'DM Mono', monospace; }.skill-copy b { margin-top: 3px; overflow: hidden; font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }.skill-lock { margin-left: auto; color: var(--gold); }
+.hero-controls { position: relative; z-index: 3; display: flex; justify-content: center; gap: 6px; width: max-content; max-width: 100%; margin-top: 8px; }
+.hero-control-button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 30px; padding: 6px 8px; border: 1px solid #665442; border-radius: 8px; background: linear-gradient(110deg, #332a28, #201d25); box-shadow: inset 0 1px #fff2, 0 5px 10px #0005; color: var(--cream); cursor: pointer; font-size: 10px; line-height: 1; text-align: center; transition: transform .18s, border-color .18s, filter .18s; }
+.hero-control-button:hover { border-color: var(--gold); filter: brightness(1.1); transform: translateY(-2px); }
+.hero-control-button:active { transform: translateY(0); }
+.hero-control-button.end-turn { border-color: #5b5260; background: linear-gradient(110deg, #2c2932, #1d1c25); }
+.hero-control-button.end-turn > span { color: var(--gold); font-size: 16px; }
+.hero-controls .role-open-button { width: auto; min-width: 0; margin: 0; padding: 5px 7px; gap: 5px; }
+.hero-controls .role-open-button .role-open-icon { width: 20px; height: 20px; border-radius: 6px; font-size: 12px; }
+.hero-controls .role-open-button b { font-size: 9px; white-space: nowrap; }
+.hero-controls .role-open-arrow { font-size: 14px; }
+.coin-pouch { position: absolute; right: -12px; bottom: 9px; display: flex; align-items: center; gap: 6px; padding: 6px 11px 6px 6px; border: 1px solid #9a7040; border-radius: 99px; background: linear-gradient(145deg, #35281f, #17171d); box-shadow: 0 6px 12px #0006; }.coin-orbit { display: grid; place-items: center; width: 29px; height: 29px; border: 1px solid #d5a750; border-radius: 50%; background: #7c5b2c; font-size: 16px; }.coin-pouch small, .coin-pouch strong { display: block; }.coin-pouch small { color: var(--muted); font-size: 8px; }.coin-pouch strong { color: var(--gold-bright); font: 700 15px 'DM Mono', monospace; }
+
+/* Hand */
+.hand-tray { position: relative; margin: 1px auto 0; padding: 10px 12px 0; border-top: 1px solid #79573b88; }.hand-title { display: flex; align-items: center; justify-content: space-between; padding: 0 5px; }.hand-title > span { display: flex; align-items: baseline; gap: 10px; }.hand-title strong { font-size: 12px; }.hand-title small { color: var(--dim); font: 9px 'DM Mono', monospace; }.hand-cards { display: flex; justify-content: center; min-height: 162px; padding: 11px 10px 0; perspective: 900px; }.hand-card { flex: 0 1 112px; width: 112px; min-height: 143px; margin-left: -9px; padding: 11px 9px; border: 1px solid #72614d; border-radius: 11px; background: linear-gradient(145deg, #403a3a 0%, #24242d 56%, #191a21 100%); box-shadow: 3px 8px 10px #0008, inset 0 1px #fff3; text-align: left; transform: rotate(calc((var(--i, 0) - 3) * 2deg)) translateY(calc(abs(var(--i, 0) - 3) * 2px)); transform-origin: bottom center; transition: transform .2s, margin .2s, z-index .2s; }.hand-card:first-child { margin-left: 0; }.hand-card:hover:not(:disabled) { z-index: 5; margin: 0 3px; transform: translateY(-16px) rotate(0deg) scale(1.05); }.hand-card.selectable { cursor: pointer; }.hand-card:disabled { cursor: default; opacity: .75; }.hand-card .district-icon { display: block; margin: 3px 0 14px; font-size: 31px; }.hand-card .district-name { display: block; max-width: 100%; overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }.hand-card .district-cost { display: block; margin-top: 6px; color: var(--gold-bright); font: 500 10px 'DM Mono', monospace; }.hand-card .district-points { right: 9px; bottom: 10px; color: var(--muted); font: 9px 'DM Mono', monospace; }.district-card { position: relative; display: flex; flex-direction: column; align-items: flex-start; }.district-card::before { position: absolute; top: 0; right: 9px; left: 9px; height: 3px; border-radius: 0 0 3px 3px; background: var(--district-color, #999); content: ''; }.district-card.blue { --district-color: var(--blue); }.district-card.red { --district-color: var(--red); }.district-card.green { --district-color: var(--green); }.district-card.yellow { --district-color: var(--yellow); }.district-card.purple { --district-color: var(--purple); }.district-icon { font-size: 25px; }.district-name { font-size: 12px; font-weight: 700; }.district-cost { color: var(--gold); font: 500 10px 'DM Mono', monospace; }.district-points { position: absolute; right: 8px; bottom: 8px; }.empty-hand { align-self: center; }
+
+/* Income cards live alongside the district hand. */
+.hand-income-card { flex: 0 1 112px; width: 112px; min-height: 143px; margin-left: -9px; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; grid-template-columns: none; grid-template-rows: none; padding: 11px 9px; border-radius: 11px; transform: rotate(calc((var(--i, 0) - 3) * 2deg)); transform-origin: bottom center; }
+.hand-income-card:first-child { margin-left: 0; }
+.hand-income-card:hover:not(:disabled) { z-index: 5; margin: 0 3px; transform: translateY(-16px) rotate(0deg) scale(1.05); }
+.hand-income-card > span { width: 38px; height: 42px; margin: 3px 0 14px; border: 1px solid #bb8d4a; border-radius: 9px; background: #61472c; font-size: 22px; }
+.hand-income-card.cards > span { border-color: #6684a0; background: #304b63; }
+.hand-income-card b { max-width: 100%; font-size: 12px; }
+.hand-income-card small { margin-top: 6px; font-size: 9px; line-height: 1.35; white-space: normal; }
+.hand-income-card em { margin-top: auto; color: var(--gold); font: 9px 'DM Mono', monospace; font-style: normal; }
+
+/* Results and dialogs */
+.score-panel { width: min(650px, 100%); margin: 22px auto; padding: 20px; border: 1px solid #80603e; border-radius: 15px; background: #181922dd; box-shadow: 0 15px 35px #0007; }.score-heading h2 { margin: 6px 0 15px; font: 700 30px Fraunces, serif; }.score-row { display: grid; grid-template-columns: 30px 36px 1fr auto auto; align-items: center; gap: 10px; padding: 10px; border-top: 1px solid #3c3538; }.score-row .rank, .score-row > b { color: var(--gold); font: 600 13px 'DM Mono', monospace; }.score-row > span { color: var(--muted); font-size: 10px; }.modal-backdrop { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; padding: 20px; background: #07080db8; backdrop-filter: blur(4px); }.detail-modal { position: relative; width: min(390px, 100%); padding: 28px; border: 1px solid #675246; border-top: 4px solid var(--gold); border-radius: 15px; background: linear-gradient(145deg, #30272a, #17191f); box-shadow: 0 25px 70px #000b; }.detail-modal.blue { border-top-color: var(--blue); }.detail-modal.red { border-top-color: var(--red); }.detail-modal.green { border-top-color: var(--green); }.detail-modal.yellow { border-top-color: var(--yellow); }.detail-modal.purple { border-top-color: var(--purple); }.modal-close { position: absolute; top: 8px; right: 12px; border: 0; background: transparent; color: var(--muted); cursor: pointer; font-size: 25px; }.modal-icon { display: block; margin-bottom: 8px; font-size: 43px; }.detail-modal h2 { margin: 6px 0 14px; font: 700 30px Fraunces, serif; }.detail-modal p { color: #d2cabb; font-size: 12px; line-height: 1.75; }.role-availability { margin: 17px 0; color: var(--gold) !important; font: 10px 'DM Mono', monospace; }.modal-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 15px 0; }.modal-stats span { padding: 9px; border-radius: 8px; background: #11131a; color: var(--muted); font-size: 10px; }.modal-stats b { display: block; margin-top: 4px; color: var(--gold); font: 500 12px 'DM Mono', monospace; }
+
+@media (max-width: 900px) {
+  .shell { padding: 14px 14px 22px; }
+  .table-world { padding: 12px 10px 20px; }
+  .role-icons { grid-template-columns: repeat(4, 1fr); }
+  .city-lanes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .action-strip { align-items: stretch; flex-direction: column; gap: 9px; }.turn-status p { max-width: none; }.action-buttons { display: grid; grid-template-columns: repeat(3, 1fr); }.action-button, .income-card { min-width: 0; }.income-card { width: 100%; }
+  .city-lane.my-city .city-buildings { grid-template-columns: repeat(auto-fit, minmax(108px, 124px)); min-height: 198px; gap: 10px; padding: 10px; }
+  .central-building { min-height: 150px; padding: 11px 9px 9px; }
+  .central-building-icon { min-height: 48px; font-size: 36px !important; }
+  .hero-console { grid-template-columns: minmax(0, 1fr) 132px minmax(0, 1fr); gap: 9px; }.coin-pouch { right: -3px; }
+  .hero-controls { gap: 4px; }
+  .hero-control-button { padding: 5px 6px; font-size: 9px; }
+}
+
+@media (max-width: 600px) {
+  .game-topbar { height: 42px; }.brand-mini { font-size: 19px; }.round-marker { gap: 7px; font-size: 10px; }.round-marker b { padding-left: 7px; }
+  .opponent-orbit { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 27px 0 6px; }.opponent-orbit::before { inset: 2px 0; border-radius: 42% 42% 30% 30%; }.orbit-player { padding: 7px; }.orbit-stats { gap: 4px; }.orbit-city-building { flex-basis: 31px; width: 31px; height: 28px; }.orbit-city-building span { font-size: 13px; }.orbit-city-building small { font-size: 5px; }
+  .stage-header h1 { font-size: 23px; }.stage-rule { font-size: 8px; }.city-lanes { grid-template-columns: 1fr; }.city-lane:not(.my-city) { display: none; }.city-lane.my-city .city-buildings { grid-template-columns: repeat(auto-fit, minmax(102px, 116px)); min-height: 166px; gap: 8px; padding: 8px; }.city-stage { min-height: 155px; }
+  .turn-status { align-items: flex-start; flex-wrap: wrap; }.turn-status p { flex-basis: 100%; max-width: none; margin: 0 0 0 17px; font-size: 9px; }.turn-status .role-open-button { margin-left: auto; padding: 5px 7px; }.action-buttons { gap: 5px; }.action-button { padding: 6px 5px; grid-template-columns: 18px 1fr; }.action-button > span { font-size: 16px; }.action-button b { font-size: 9px; }.action-button small { font-size: 8px; }.income-card { min-height: 56px; padding: 6px 5px; grid-template-columns: 25px 1fr; }.income-card > span { width: 22px; height: 35px; font-size: 16px; }.income-card b { font-size: 9px; }.income-card small { font-size: 8px; }
+  .hero-console { grid-template-columns: minmax(0, 1fr) 112px minmax(0, 1fr); gap: 6px; min-height: 132px; align-items: start; }.hero-pedestal { min-height: 132px; padding-top: 2px; }.hero-avatar { width: 52px; height: 52px; border-radius: 15px; }.hero-halo { width: 82px; height: 65px; }.hero-controls { flex-wrap: wrap; gap: 4px; max-width: 116px; margin-top: 6px; }.hero-control-button { min-height: 27px; padding: 5px 6px; font-size: 8px; }.hero-controls .role-open-button { padding: 4px 5px; gap: 3px; }.hero-controls .role-open-button .role-open-icon { width: 18px; height: 18px; font-size: 10px; }.hero-controls .role-open-button b { font-size: 8px; }.hero-controls .role-open-arrow { font-size: 12px; }.hero-control-button.end-turn > span { font-size: 13px; }.skill-orb { gap: 5px; padding: 7px 5px; }.skill-card-group { gap: 4px; }.skill-card { width: 100%; min-height: 38px; gap: 5px; padding: 5px; }.skill-card .skill-icon, .skill-card .skill-card-icon { width: 25px; height: 25px; font-size: 14px; }.skill-card .skill-copy small, .skill-card .skill-card-copy small { font-size: 7px; }.skill-card .skill-copy b, .skill-card .skill-card-copy b { font-size: 8px; }.skill-card .skill-lock, .skill-card .skill-card-state { font-size: 10px; }.skill-icon { width: 29px; height: 29px; font-size: 17px; }.skill-copy small { font-size: 8px; }.skill-copy b { font-size: 9px; }.coin-pouch { right: 50%; bottom: -7px; transform: translateX(50%); }
+  .hand-tray { margin-top: 10px; padding-top: 9px; }.hand-title { align-items: flex-start; }.hand-title > span { display: grid; gap: 2px; }.hand-title small { font-size: 8px; }.hand-cards { justify-content: flex-start; overflow-x: auto; min-height: 142px; padding-top: 9px; }.hand-card, .hand-income-card { flex: 0 0 96px; width: 96px; min-height: 126px; margin-left: -13px; }.hand-card .district-icon { margin-bottom: 10px; font-size: 26px; }.hand-card .district-name { font-size: 10px; }.hand-income-card > span { width: 31px; height: 35px; margin-bottom: 10px; font-size: 18px; }.hand-income-card b { font-size: 10px; }.hand-income-card small, .hand-income-card em { font-size: 8px; }
+  .score-row { grid-template-columns: 25px 30px 1fr auto; }.score-row > span { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; } }
+
+/* Two-card draw choice: keep the drawn districts floating above the table
+   until one is selected. The cards reuse the district face styling but are
+   deliberately larger and spaced apart so the choice is immediately clear. */
+.district-choice-backdrop { z-index: 24; }
+.district-choice-modal { width: min(560px, 100%); padding: 24px 22px 26px; border: 1px solid #80603e; border-top: 4px solid var(--gold); border-radius: 16px; background: linear-gradient(145deg, #30272a, #17191f 78%); box-shadow: 0 28px 75px #000c, inset 0 1px #fff2; text-align: center; }
+.district-choice-modal h2 { margin: 6px 0 19px; color: var(--cream); font: 700 25px Fraunces, serif; }
+.district-choice-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); justify-content: center; gap: 18px; perspective: 900px; }
+.district-choice-controls { justify-content: center; margin-top: 18px; }
+.district-choice-card { width: 100%; min-height: 190px; margin: 0; padding: 18px 15px 15px; border: 1px solid #72614d; border-radius: 14px; background: linear-gradient(145deg, #403a3a 0%, #24242d 56%, #191a21 100%); color: var(--cream); box-shadow: 4px 12px 20px #0009, inset 0 1px #fff4; transform: rotate(calc((var(--i, 0) - .5) * 2deg)); }
+.district-choice-card:hover { z-index: 2; border-color: var(--gold-bright); transform: translateY(-7px) rotate(0deg) scale(1.03); }
+.district-choice-card .district-icon { margin: 10px 0 24px; font-size: 48px; }
+.district-choice-card .district-name { font-size: 15px; }
+.district-choice-card .district-cost { margin-top: 8px; font-size: 11px; }
+.district-choice-card .district-points { right: 13px; bottom: 13px; font-size: 10px; }
+@media (max-width: 600px) {
+  .district-choice-modal { padding: 20px 14px 22px; }
+  .district-choice-cards { gap: 10px; }
+  .district-choice-card { min-height: 170px; padding: 14px 10px 12px; }
+  .district-choice-card .district-icon { margin-bottom: 19px; font-size: 39px; }
+  .district-choice-card .district-name { font-size: 12px; }
+}
+
+@media (min-width: 901px) and (max-height: 820px) {
+  .shell { padding-top: 8px; padding-bottom: 10px; }
+  .game-topbar { height: 38px; margin-bottom: 6px; }
+  .table-world { min-height: calc(100dvh - 52px); padding: 8px 12px 10px; }
+  .opponent-orbit { gap: 6px; margin-bottom: 6px; padding: 20px 14px 3px; }
+  .orbit-player { padding: 5px 7px; }
+  .orbit-avatar { width: 26px; height: 26px; font-size: 11px; }
+  .orbit-stats { gap: 5px; }
+  .role-rail { margin-bottom: 7px; padding: 6px 10px 7px; }
+  .rail-title { margin-bottom: 5px; }
+  .role-chip { height: 46px; }
+  .role-chip span { font-size: 19px; }
+  .city-stage { min-height: 165px; padding: 9px 12px 9px; }.city-lane.my-city .city-buildings { min-height: 178px; padding: 9px 12px; gap: 8px; }.central-building { min-height: 145px; padding: 9px 8px 8px; }.central-building-icon { min-height: 44px; margin: 4px 0 6px; font-size: 33px !important; }
+  .stage-header { margin-bottom: 5px; }
+  .stage-header h1 { font-size: 22px; }
+  .city-lanes { gap: 5px; }
+  .city-lane { padding: 5px 7px; }
+  .city-lane-head { margin-bottom: 4px; }
+  .city-buildings { min-height: 42px; }
+  .city-building { flex-basis: 40px; min-height: 40px; }
+  .city-building span { font-size: 17px; }
+  .action-strip { margin: 7px 0 3px; padding: 6px 10px; }
+  .action-button { min-height: 34px; padding: 4px 7px; }
+  .hero-console { min-height: 118px; }
+  .hero-pedestal { min-height: 118px; }
+  .hero-avatar { width: 50px; height: 50px; }
+  .hero-halo { width: 82px; height: 62px; }
+  .hand-tray { padding-top: 5px; }
+  .hand-cards { min-height: 118px; padding-top: 6px; }
+  .hand-card { min-height: 105px; padding: 8px 8px; }
+  .hand-card .district-icon { margin: 1px 0 8px; font-size: 25px; }
+}
+
+/* Role picker popup */
+.role-rail { padding: 8px 12px 9px; }
+.role-rail .rail-title { align-items: flex-end; }
+.role-rail .rail-title > span { display: flex; align-items: baseline; gap: 9px; }
+.role-rail .rail-title strong { color: var(--cream); font-size: 11px; }
+.role-open-button { display: flex; align-items: center; width: 100%; gap: 10px; padding: 9px 11px; border: 1px solid #665442; border-radius: 10px; background: linear-gradient(110deg, #332a28, #201d25); box-shadow: inset 0 1px #fff2, 0 5px 10px #0004; cursor: pointer; text-align: left; transition: .18s; }
+.role-open-button:hover { border-color: var(--gold); background: linear-gradient(110deg, #473728, #28232a); transform: translateY(-1px); }
+.role-open-icon { display: grid; flex: 0 0 auto; place-items: center; width: 28px; height: 28px; border: 1px solid #ad7a3d; border-radius: 8px; background: #523b29; color: var(--gold-bright); font-size: 16px; }
+.role-open-button b, .role-open-button small { display: block; }
+.role-open-button b { font-size: 11px; }
+.role-open-button small { margin-top: 2px; color: var(--muted); font-size: 9px; }
+.role-open-arrow { margin-left: auto; color: var(--gold); font-size: 19px; }
+
+.role-modal-backdrop { align-items: center; overflow-y: auto; }
+.role-picker-modal { width: min(1080px, 100%); max-height: min(760px, calc(100dvh - 34px)); overflow: auto; padding: 22px; border: 1px solid #765638; border-radius: 18px; background: radial-gradient(circle at 50% 0, #342b2d, #1c1b23 58%, #12141b); box-shadow: 0 30px 100px #000b, inset 0 1px #fff2; }
+.role-picker-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+.role-picker-head h2 { margin-top: 6px; font: 700 28px Fraunces, serif; letter-spacing: -.03em; }
+.role-state-legend { display: flex; flex-wrap: wrap; gap: 12px 18px; margin: 15px 0 16px; color: var(--muted); font: 9px 'DM Mono', monospace; }
+.role-state-legend > span { display: inline-flex; align-items: center; gap: 6px; }
+.legend-swatch { display: inline-block; width: 13px; height: 13px; border: 1px solid #8f7049; border-radius: 4px; background: linear-gradient(145deg, #4b3b30, #25232a); }
+.legend-swatch.dark { border-color: #48434b; background: #14151b; opacity: .7; }.legend-swatch.back { border-color: #575564; background: repeating-linear-gradient(135deg, #41404a 0 2px, #272631 2px 4px); }
+.role-picker-layout { display: flex; flex-direction: column; gap: 14px; }
+.role-card-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 9px; }
+.role-card { position: relative; display: flex; min-height: 148px; flex-direction: column; align-items: flex-start; padding: 12px 11px 10px; border: 1px solid #6b5749; border-radius: 11px; background: linear-gradient(145deg, #443932, #24232a 68%, #1b1b23); box-shadow: inset 0 1px #fff2, 0 7px 10px #0005; text-align: left; transition: transform .18s, border-color .18s, filter .18s; }
+.role-card.front.selectable { cursor: pointer; }.role-card.front.selectable:hover { border-color: var(--gold-bright); background: linear-gradient(145deg, #5a4634, #28242a); transform: translateY(-4px); }
+.role-card.front::before, .role-card.dark::before { position: absolute; top: 0; right: 10px; left: 10px; height: 3px; border-radius: 0 0 3px 3px; background: var(--gold); content: ''; }
+.role-card.dark { border-color: #3d3a42; background: linear-gradient(145deg, #25242c, #11131a); filter: saturate(.35); opacity: .58; }.role-card.dark::before { background: #66636b; }
+.role-card.back { display: grid; place-items: center; align-content: center; border-color: #555563; background: repeating-linear-gradient(135deg, #363540 0 3px, #24232d 3px 7px); color: #aaa9b5; text-align: center; }.role-card.back::after { position: absolute; inset: 6px; border: 1px solid #85808d44; border-radius: 7px; content: ''; pointer-events: none; }.role-card.hidden-card { min-height: 148px; }
+.role-card:disabled { cursor: default; }.role-card-rank { position: absolute; top: 8px; right: 9px; color: var(--gold); font: 500 10px 'DM Mono', monospace; }.role-card-icon { margin: 4px 0 9px; font-size: 30px; line-height: 1; }.role-card strong { font-size: 14px; }.role-card small { margin-top: 5px; color: #c9c1b4; font-size: 10px; line-height: 1.45; }.role-card em { margin-top: auto; padding-top: 8px; color: var(--gold); font: 9px 'DM Mono', monospace; font-style: normal; }.role-card-back-mark { color: #d5a55d; font-size: 31px; text-shadow: 0 2px 6px #0008; }.role-card-back-label { margin-top: 9px; color: #d5d0c6; font: 10px 'DM Mono', monospace; }
+.role-focus { display: flex; min-height: auto; align-items: flex-start; gap: 11px; padding: 13px 16px; border: 1px solid #4a4143; border-radius: 11px; background: #13151d99; }.role-focus-icon { font-size: 34px; }.role-focus h3 { margin: 7px 0 8px; font: 700 24px Fraunces, serif; }.role-focus p { color: #c9c3b6; font-size: 11px; line-height: 1.7; }.empty-focus { align-items: center; justify-content: center; flex-direction: column; text-align: center; }.empty-focus > span { color: var(--gold); font-size: 26px; }.empty-focus p { color: var(--muted); }
+.role-picker-foot { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-top: 16px; padding-top: 12px; border-top: 1px solid #443a3a; color: var(--dim); font: 9px 'DM Mono', monospace; }.role-picker-foot .secondary { padding: 8px 14px; border: 1px solid #5b5260; border-radius: 8px; background: #292832; color: var(--cream); cursor: pointer; }
+
+@media (max-width: 800px) {
+  .role-picker-modal { padding: 16px; }
+  .role-picker-layout { grid-template-columns: 1fr; }.role-focus { min-height: auto; }.role-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }.role-card { min-height: 138px; }
+}
+@media (max-width: 480px) {
+  .role-rail .rail-title { align-items: flex-start; flex-direction: column; gap: 3px; }.role-rail .rail-title > span { gap: 6px; }.role-rail .rail-title small { font-size: 8px; }.role-open-button { padding: 8px; }.role-open-button b { font-size: 10px; }.role-picker-head h2 { font-size: 23px; }.role-state-legend { gap: 7px 11px; font-size: 8px; }.role-picker-foot span { max-width: 200px; }.role-card { min-height: 132px; padding: 10px 9px; }.role-card-icon { font-size: 26px; }.role-card small { font-size: 9px; }
+}
+
+/* Hero controls sit at the outer edges; skill cards stay beside the role avatar. */
+.hero-console { grid-template-columns: minmax(72px, auto) minmax(0, 1fr) minmax(112px, 152px) minmax(0, 1fr) minmax(72px, auto); gap: 12px; width: min(760px, 100%); }
+.hero-control-slot { position: relative; z-index: 4; display: flex; align-items: center; min-width: 0; }
+.hero-role-control { justify-content: flex-start; }
+.hero-end-control { justify-content: flex-end; }
+.hero-skill-slot { display: flex; min-width: 0; align-items: center; }
+.hero-skill-slot.left { justify-content: flex-end; }
+.hero-skill-slot.right { justify-content: flex-start; }
+.hero-control-slot .hero-control-button { max-width: 100%; white-space: nowrap; }
+.hero-avatar.has-role { width: 74px; height: 74px; border-radius: 22px; font-size: 37px; box-shadow: 0 9px 15px #0009, inset 0 1px #fff6, 0 0 0 3px #d3a25935; }
+.skill-card { width: min(142px, 100%); min-height: 38px; gap: 6px; padding: 6px 7px; }
+.skill-card-copy b { margin-top: 0; font-size: 9px; }
+.skill-card::after { position: absolute; bottom: calc(100% + 7px); left: 50%; z-index: 8; width: max-content; max-width: min(220px, 70vw); padding: 7px 9px; border: 1px solid #8a6c42; border-radius: 7px; background: #17151bd9; box-shadow: 0 8px 18px #0009; color: #f2e8d2; content: attr(data-skill-detail); font-size: 10px; line-height: 1.45; opacity: 0; pointer-events: none; transform: translate(-50%, 4px); transition: opacity .15s, transform .15s; }
+.skill-card:hover::after, .skill-card:focus-visible::after, .skill-card:active::after { opacity: 1; transform: translate(-50%, 0); }
+
+@media (max-width: 900px) {
+  .hero-console { grid-template-columns: minmax(62px, auto) minmax(0, 1fr) 126px minmax(0, 1fr) minmax(62px, auto); gap: 7px; width: min(760px, 100%); }
+  .hero-avatar.has-role { width: 68px; height: 68px; font-size: 34px; }
+  .hero-control-button { padding: 5px 6px; font-size: 9px; }
+  .skill-card { width: min(124px, 100%); min-height: 36px; padding: 5px 6px; }
+}
+
+@media (max-width: 600px) {
+  .hero-console { grid-template-columns: minmax(54px, auto) minmax(0, 1fr) 102px minmax(0, 1fr) minmax(54px, auto); gap: 4px; width: 100%; }
+  .hero-avatar.has-role { width: 62px; height: 62px; border-radius: 18px; font-size: 31px; }
+  .hero-control-button { min-height: 27px; padding: 4px 4px; gap: 3px; font-size: 8px; }
+  .hero-controls .role-open-button { padding: 4px; }
+  .hero-controls .role-open-button .role-open-icon { width: 17px; height: 17px; font-size: 10px; }
+  .hero-control-button.end-turn > span { font-size: 13px; }
+  .skill-card { width: 100%; min-height: 34px; gap: 4px; padding: 4px; }
+  .skill-card-icon { width: 24px; height: 24px; font-size: 13px; }
+  .skill-card-copy b { font-size: 8px; }
+  .skill-card::after { bottom: auto; top: calc(100% + 6px); }
+}
+
+/* Player hero controls and compact ability cards.
+   The controls live inside the centered pedestal in the markup, so the
+   absolute full-console width keeps the role picker on the far left and the
+   end-turn action on the far right without changing the DOM. */
+.hero-console {
+  grid-template-columns: minmax(0, 1fr) 180px minmax(0, 1fr);
+  min-height: 152px;
+  align-items: start;
+  gap: 22px;
+}
+.hero-pedestal {
+  min-height: 136px;
+  padding-top: 4px;
+}
+.hero-avatar {
+  width: 82px;
+  height: 82px;
+  border-radius: 24px;
+  font-size: 36px;
+  box-shadow: 0 10px 17px #0009, inset 0 1px #fff5, 0 0 0 4px #8e663946;
+}
+.hero-halo {
+  top: 1px;
+  width: 126px;
+  height: 96px;
+}
+.hero-name {
+  margin-top: 8px;
+}
+.hero-name strong {
+  font-size: 13px;
+}
+.hero-controls {
+  position: absolute;
+  z-index: 4;
+  right: auto;
+  bottom: 0;
+  left: 50%;
+  display: flex;
+  justify-content: space-between;
+  width: min(600px, calc(100vw - 40px));
+  max-width: none;
+  margin: 0;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+.hero-controls > * {
+  pointer-events: auto;
+}
+.hero-controls .role-open-button,
+.hero-controls .hero-control-button.end-turn {
+  flex: 0 0 auto;
+}
+.hero-controls .role-open-button {
+  order: 0;
+}
+.hero-controls .end-turn {
+  order: 1;
+}
+
+/* Ability cards expose only the icon and ability name at rest. The role,
+   description, and availability state remain available to assistive/native
+   title users and are revealed by the custom tooltip on hover or focus. */
+.skill-card {
+  width: min(148px, 100%);
+  min-height: 38px;
+  gap: 7px;
+  padding: 5px 7px;
+  border-radius: 9px;
+}
+.skill-card-copy {
+  min-width: 0;
+}
+.skill-card-copy small,
+.skill-card-copy em,
+.skill-card-state {
+  display: none !important;
+}
+.skill-card-copy b {
+  margin-top: 0;
+  font-size: 10px;
+  line-height: 1.2;
+}
+.skill-card-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  font-size: 14px;
+}
+.skill-card[data-skill-detail]::after,
+.skill-card[data-tooltip]::after,
+.skill-card[title]::after {
+  position: absolute;
+  bottom: calc(100% + 9px);
+  left: 50%;
+  z-index: 30;
+  width: max-content;
+  max-width: min(260px, calc(100vw - 36px));
+  padding: 8px 10px;
+  border: 1px solid #876a48;
+  border-radius: 8px;
+  background: linear-gradient(145deg, #32292a, #171820);
+  box-shadow: 0 8px 18px #000a, inset 0 1px #fff2;
+  color: #e6dece;
+  content: attr(data-skill-detail);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.45;
+  opacity: 0;
+  pointer-events: none;
+  text-align: left;
+  text-wrap: pretty;
+  transform: translate(-50%, 5px);
+  transition: opacity .16s ease, transform .16s ease;
+}
+.skill-card[data-tooltip]::after {
+  content: attr(data-tooltip);
+}
+.skill-card:not([data-skill-detail])[title]::after {
+  content: attr(title);
+}
+.skill-card[data-skill-detail]:hover::after,
+.skill-card[data-tooltip]:hover::after,
+.skill-card[title]:hover::after,
+.skill-card[data-skill-detail]:focus::after,
+.skill-card[data-tooltip]:focus::after,
+.skill-card[title]:focus::after,
+.skill-card[data-skill-detail]:focus-visible::after,
+.skill-card[data-tooltip]:focus-visible::after,
+.skill-card[title]:focus-visible::after {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+@media (max-width: 900px) {
+  .hero-console {
+    grid-template-columns: minmax(0, 1fr) 150px minmax(0, 1fr);
+    min-height: 146px;
+    gap: 12px;
+  }
+  .hero-pedestal { min-height: 132px; }
+  .hero-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 21px;
+    font-size: 32px;
+  }
+  .hero-halo { width: 112px; height: 88px; }
+  .hero-controls { width: min(600px, calc(100vw - 28px)); }
+  .skill-card { width: min(136px, 100%); }
+}
+
+@media (max-width: 600px) {
+  .hero-console {
+    grid-template-columns: minmax(0, 1fr) 136px minmax(0, 1fr);
+    min-height: 142px;
+    gap: 6px;
+  }
+  .hero-pedestal { min-height: 128px; }
+  .hero-avatar {
+    width: 66px;
+    height: 66px;
+    border-radius: 19px;
+    font-size: 29px;
+  }
+  .hero-halo { width: 102px; height: 80px; }
+  .hero-name strong { font-size: 11px; }
+  .hero-controls {
+    width: calc(100vw - 24px);
+    bottom: 0;
+  }
+  .hero-controls .role-open-button,
+  .hero-controls .hero-control-button.end-turn {
+    min-height: 29px;
+    padding: 5px 7px;
+    font-size: 9px;
+  }
+  .hero-controls .role-open-button .role-open-icon {
+    width: 19px;
+    height: 19px;
+    font-size: 11px;
+  }
+  .skill-card {
+    width: min(118px, 100%);
+    min-height: 35px;
+    gap: 5px;
+    padding: 4px 5px;
+  }
+  .skill-card-icon { width: 23px; height: 23px; font-size: 13px; }
+  .skill-card-copy b { font-size: 8px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skill-card[data-skill-detail]::after,
+  .skill-card[data-tooltip]::after,
+  .skill-card[title]::after { transition: none; }
+}
+
+/* The hero row has five positions: role control, skill, avatar, skill, end
+   turn. Keeping the controls in their own grid columns pins them to the
+   outer edges while the selected character remains centered. */
+.hero-console {
+  grid-template-columns: auto minmax(0, 1fr) 180px minmax(0, 1fr) auto;
+  width: min(760px, 100%);
+  min-height: 152px;
+  gap: 12px;
+  align-items: center;
+}
+.hero-control-slot {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  z-index: 4;
+}
+.hero-role-control { justify-self: start; }
+.hero-end-control { justify-self: end; }
+.hero-skill-slot {
+  display: flex;
+  min-width: 0;
+  width: 100%;
+}
+.hero-skill-slot.left { justify-content: flex-end; }
+.hero-skill-slot.right { justify-content: flex-start; }
+.hero-skill-slot .skill-card { width: min(132px, 100%); }
+.hero-control-slot .hero-control-button {
+  width: auto;
+  min-width: 0;
+  white-space: nowrap;
+}
+.hero-avatar.has-role {
+  font-size: 44px;
+  text-shadow: 0 3px 7px #000a;
+}
+
+@media (max-width: 900px) {
+  .hero-console {
+    grid-template-columns: auto minmax(0, 1fr) 150px minmax(0, 1fr) auto;
+    width: min(720px, 100%);
+    gap: 8px;
+  }
+  .hero-skill-slot .skill-card { width: min(120px, 100%); }
+  .hero-avatar.has-role { font-size: 39px; }
+}
+
+@media (max-width: 600px) {
+  .hero-console {
+    grid-template-columns: minmax(44px, auto) minmax(0, 1fr) 112px minmax(0, 1fr) minmax(44px, auto);
+    gap: 4px;
+    min-height: 142px;
+  }
+  .hero-control-slot .hero-control-button {
+    max-width: 62px;
+    min-height: 28px;
+    padding: 5px 5px;
+    gap: 3px;
+    font-size: 8px;
+  }
+  .hero-control-slot .role-open-button .role-open-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+  }
+  .hero-control-slot .role-open-arrow { display: none; }
+  .hero-skill-slot .skill-card {
+    width: min(98px, 100%);
+    min-height: 34px;
+    gap: 4px;
+    padding: 4px;
+  }
+  .hero-skill-slot.left .skill-card { margin-left: auto; }
+  .hero-skill-slot.right .skill-card { margin-right: auto; }
+  .hero-avatar.has-role { font-size: 34px; }
+}
+
+/*
+ * Current round HUD and compact hero controls
+ * --------------------------------------------
+ * These rules intentionally live at the end of the stylesheet.  Several
+ * earlier iterations of the hero row used fluid columns; the fixed five
+ * columns below keep the skill icons at a stable distance from the avatar
+ * while still shrinking cleanly on a phone.
+ */
+.round-marker {
+  min-width: 0;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  column-gap: 10px;
+  row-gap: 2px;
+}
+.round-marker > span:first-child {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+.round-marker > b {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+.round-marker .round-action,
+.round-marker .round-acting,
+.round-marker .acting-player,
+.round-marker .action-hint,
+.round-marker .round-action-hint,
+.round-marker [data-round-action] {
+  flex: 0 1 auto;
+  max-width: min(42vw, 280px);
+  overflow: hidden;
+  padding: 3px 8px;
+  border: 1px solid #8d693e;
+  border-radius: 999px;
+  background: linear-gradient(145deg, #342a25, #1d1a21);
+  box-shadow: inset 0 1px #fff2, 0 3px 8px #0005;
+  color: var(--gold-bright);
+  font: 500 10px/1.2 'DM Mono', monospace;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.round-marker .round-action::before,
+.round-marker .round-acting::before,
+.round-marker .acting-player::before,
+.round-marker .action-hint::before,
+.round-marker .round-action-hint::before,
+.round-marker [data-round-action]::before {
+  margin-right: 4px;
+  color: var(--gold);
+  content: '›';
+}
+
+/* Keep the role, skills, avatar and end-turn action in a centred fixed rail. */
+.hero-console {
+  grid-template-columns: 76px 42px 124px 42px 76px;
+  grid-template-rows: 1fr;
+  column-gap: 9px;
+  row-gap: 0;
+  width: min(100%, 405px);
+  min-height: 160px;
+  align-items: center;
+  justify-content: center;
+}
+.hero-control-slot,
+.hero-skill-slot {
+  width: 100%;
+  min-width: 0;
+}
+.hero-skill-slot.left { justify-content: flex-end; }
+.hero-skill-slot.right { justify-content: flex-start; }
+.hero-skill-slot .skill-card {
+  width: 38px;
+  min-width: 38px;
+  min-height: 38px;
+  justify-content: center;
+  gap: 0;
+  padding: 4px;
+  border-radius: 10px;
+}
+.hero-skill-slot .skill-card-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  font-size: 16px;
+}
+/* The icon itself is the label.  The full name remains available through
+   aria-label/title and the hover/focus detail bubble. */
+.hero-skill-slot .skill-card-copy,
+.hero-skill-slot .skill-card-copy b,
+.hero-skill-slot .skill-card-copy small,
+.hero-skill-slot .skill-card-copy em,
+.hero-skill-slot .skill-card-state {
+  display: none !important;
+}
+
+/* The picker trigger is a miniature role card, with the same material cues
+   as the full cards in the role picker modal. */
+.hero-control-slot .role-open-button {
+  position: relative;
+  display: flex;
+  width: 70px;
+  min-width: 70px;
+  height: 82px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 7px 5px 6px;
+  overflow: hidden;
+  border: 1px solid #82633e;
+  border-radius: 10px;
+  background: linear-gradient(145deg, #49382f, #29242a 66%, #1c1c23);
+  box-shadow: inset 0 1px #fff3, 0 8px 13px #0007;
+  text-align: center;
+}
+.hero-control-slot .role-open-button::before {
+  position: absolute;
+  top: 0;
+  right: 7px;
+  left: 7px;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: var(--gold);
+  content: '';
+}
+.hero-control-slot .role-open-button:hover {
+  border-color: var(--gold-bright);
+  filter: brightness(1.08);
+  transform: translateY(-2px);
+}
+.hero-control-slot .role-open-button .role-open-icon,
+.hero-control-slot .role-open-button .role-thumb-icon {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: #f6dda5;
+  font-size: 28px;
+  line-height: 1;
+  text-shadow: 0 3px 6px #000a;
+}
+.hero-control-slot .role-open-button b,
+.hero-control-slot .role-open-button .role-thumb-name {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  color: #f3ead9;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.hero-control-slot .role-open-button .role-thumb-rank,
+.hero-control-slot .role-open-button .role-open-rank {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  color: var(--gold-bright);
+  font: 500 8px/1 'DM Mono', monospace;
+}
+.hero-control-slot .role-open-button .role-open-arrow { display: none; }
+
+/* The current trigger markup carries the eight role thumbnails so the same
+   card can be refreshed without replacing the button.  Show only the active
+   role in the compact trigger and derive its visible name from the thumbnail
+   title; the generic state keeps a small crest until a role is chosen. */
+.hero-control-slot .role-open-button .role-thumb-grid {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 53px;
+}
+.hero-control-slot .role-open-button .role-thumb-mini { display: none; }
+.hero-control-slot .role-open-button .role-thumb-mini.is-active {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 53px;
+}
+.hero-control-slot .role-open-button .role-thumb-mini-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  color: #f6dda5;
+  font-size: 28px;
+  line-height: 1;
+  text-shadow: 0 3px 6px #000a;
+}
+.hero-control-slot .role-open-button .role-thumb-mini-rank {
+  position: absolute;
+  top: -1px;
+  right: 2px;
+  color: var(--gold-bright);
+  font: 500 8px/1 'DM Mono', monospace;
+}
+.hero-control-slot .role-open-button .role-thumb-mini.is-active::after {
+  max-width: 100%;
+  overflow: hidden;
+  color: #f3ead9;
+  content: attr(title);
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.hero-control-slot .role-open-button.generic-role-thumb .role-thumb-grid::before {
+  color: #f6dda5;
+  content: '✦';
+  font-size: 28px;
+  line-height: 1;
+  text-shadow: 0 3px 6px #000a;
+}
+
+/* The role control is a compact fan of all eight role cards.  The whole
+   button remains the modal trigger, while the selected role gets a gold rim. */
+.hero-control-slot .role-open-button {
+  width: 76px;
+  min-width: 76px;
+  height: 82px;
+  padding: 7px 6px;
+}
+.hero-control-slot .role-thumb-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3px;
+  width: 62px;
+  height: 64px;
+}
+.hero-control-slot .role-thumb-mini {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid #806443;
+  border-radius: 4px;
+  background: linear-gradient(145deg, #46372f, #211f25);
+  box-shadow: inset 0 1px #fff2;
+}
+.hero-control-slot .role-thumb-mini.is-active {
+  border-color: var(--gold-bright);
+  background: linear-gradient(145deg, #67502d, #2f271f);
+  box-shadow: 0 0 0 1px #e5bd6544, inset 0 1px #fff5;
+}
+.hero-control-slot .role-thumb-mini-icon {
+  color: #f2d895;
+  font-size: 14px;
+  line-height: 1;
+  text-shadow: 0 2px 3px #000b;
+}
+.hero-control-slot .role-thumb-mini-rank {
+  position: absolute;
+  right: 2px;
+  bottom: 1px;
+  color: #ddbd78;
+  font: 500 6px/1 'DM Mono', monospace;
+}
+
+/* Coins sit directly beneath the player's avatar, where they read as a
+   persistent resource chip without colliding with either skill button. */
+.hero-console > .coin-pouch {
+  top: auto;
+  right: auto;
+  bottom: 1px;
+  left: 50%;
+  z-index: 5;
+  min-width: 64px;
+  justify-content: center;
+  padding: 4px 8px 4px 5px;
+  gap: 5px;
+  transform: translateX(-50%);
+}
+.hero-console > .coin-pouch .coin-orbit {
+  width: 24px;
+  height: 24px;
+  font-size: 14px;
+}
+.hero-console > .coin-pouch small { font-size: 7px; }
+.hero-console > .coin-pouch strong { font-size: 13px; }
+
+/* Resource and score readouts stay in a compact stack beneath the avatar.
+   This overrides the older floating pouch rule used by the original hero
+   layout and keeps both values anchored to the fixed centre column. */
+.hero-player-stats {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  margin-top: 7px;
+}
+.hero-player-stats .coin-pouch,
+.hero-player-stats .hero-score {
+  position: static;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 54px;
+  min-height: 29px;
+  padding: 4px 7px;
+  border: 1px solid #80603e;
+  border-radius: 8px;
+  background: linear-gradient(145deg, #35281f, #17171d);
+  box-shadow: inset 0 1px #fff2, 0 4px 8px #0005;
+}
+.hero-player-stats .coin-pouch {
+  gap: 4px;
+}
+.hero-player-stats .coin-orbit {
+  width: 21px;
+  height: 21px;
+  border-color: #d5a750;
+  font-size: 12px;
+}
+.hero-player-stats .coin-pouch small,
+.hero-player-stats .hero-score small {
+  display: block;
+  color: var(--muted);
+  font-size: 7px;
+  line-height: 1.1;
+}
+.hero-player-stats .coin-pouch strong,
+.hero-player-stats .hero-score strong {
+  display: block;
+  color: var(--gold-bright);
+  font: 700 12px/1.15 'DM Mono', monospace;
+}
+.hero-player-stats .hero-score {
+  flex-direction: column;
+  gap: 1px;
+  border-color: #6d5a47;
+  background: linear-gradient(145deg, #29252a, #171820);
+}
+
+/* End turn is always present in the hero rail.  Disabled rounds remain
+   visible as a clear, low contrast affordance. */
+.hero-control-slot .end-turn:disabled,
+.hero-control-slot .end-turn.disabled,
+.hero-control-slot .end-turn[aria-disabled='true'] {
+  border-color: #4b4850;
+  background: linear-gradient(145deg, #2b2a31, #1c1c23);
+  box-shadow: inset 0 1px #fff1, 0 5px 9px #0004;
+  color: #8e8b91;
+  cursor: default;
+  filter: saturate(.25);
+  opacity: .62;
+  transform: none;
+}
+.hero-control-slot .end-turn:disabled > span,
+.hero-control-slot .end-turn.disabled > span,
+.hero-control-slot .end-turn[aria-disabled='true'] > span { color: #98959b; }
+
+/* The player's score is a compact chip below the name or beside the role
+   label; aliases cover both markup variants used by the game view. */
+.hero-score-chip,
+.player-score-chip,
+.hero-name .score-chip,
+.hero-name [data-score] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  margin-top: 4px;
+  padding: 2px 6px;
+  border: 1px solid #85663f;
+  border-radius: 999px;
+  background: #211c1dcc;
+  color: var(--gold-bright);
+  font: 500 9px/1.2 'DM Mono', monospace;
+  box-shadow: inset 0 1px #fff1, 0 3px 7px #0004;
+}
+
+@media (max-width: 600px) {
+  .round-marker { column-gap: 6px; }
+  .round-marker .round-action,
+  .round-marker .round-acting,
+  .round-marker .acting-player,
+  .round-marker .action-hint,
+  .round-marker .round-action-hint,
+  .round-marker [data-round-action] {
+    max-width: 44vw;
+    padding: 2px 6px;
+    font-size: 8px;
+  }
+  .hero-console {
+    grid-template-columns: 58px 36px 104px 36px 58px;
+    column-gap: 6px;
+    min-height: 148px;
+  }
+  .hero-control-slot .role-open-button {
+    width: 58px;
+    min-width: 58px;
+    height: 70px;
+    padding: 5px 3px;
+  }
+  .hero-control-slot .role-open-button .role-open-icon,
+  .hero-control-slot .role-open-button .role-thumb-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 22px;
+  }
+  .hero-control-slot .role-open-button .role-thumb-grid,
+  .hero-control-slot .role-open-button .role-thumb-mini.is-active { min-height: 43px; }
+  .hero-control-slot .role-open-button .role-thumb-mini-icon { width: 32px; height: 32px; font-size: 22px; }
+  .hero-control-slot .role-open-button .role-thumb-mini.is-active::after { font-size: 8px; }
+  .hero-control-slot .role-open-button.generic-role-thumb .role-thumb-grid::before { font-size: 22px; }
+  .hero-control-slot .role-open-button b,
+  .hero-control-slot .role-open-button .role-thumb-name { font-size: 8px; }
+  .hero-control-slot .role-thumb-grid { width: 50px; height: 55px; gap: 2px; }
+  .hero-control-slot .role-thumb-mini-icon { font-size: 11px; }
+  .hero-control-slot .role-thumb-mini-rank { right: 1px; bottom: 1px; font-size: 5px; }
+  .hero-skill-slot .skill-card {
+    width: 34px;
+    min-width: 34px;
+    min-height: 34px;
+    padding: 3px;
+  }
+  .hero-skill-slot .skill-card-icon {
+    width: 25px;
+    height: 25px;
+    font-size: 14px;
+  }
+  .hero-console > .coin-pouch { bottom: 0; }
+  .hero-player-stats { gap: 4px; margin-top: 5px; }
+  .hero-player-stats .coin-pouch,
+  .hero-player-stats .hero-score { min-width: 48px; min-height: 26px; padding: 3px 5px; }
+  .hero-player-stats .coin-pouch strong,
+  .hero-player-stats .hero-score strong { font-size: 10px; }
+}
+
+/* Final specificity pass for the eight-card trigger.  Earlier compact-role
+   rules targeted the selected card only; this trigger intentionally keeps
+   all eight mini cards visible at once. */
+.hero-control-slot .role-open-button .role-thumb-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  place-items: stretch;
+  gap: 3px;
+  width: 62px;
+  height: 64px;
+  min-height: 64px;
+}
+.hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini,
+.hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini.is-active {
+  position: relative;
+  display: grid !important;
+  place-items: center;
+  width: auto;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+.hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini .role-thumb-mini-icon,
+.hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini.is-active .role-thumb-mini-icon {
+  display: grid;
+  place-items: center;
+  width: auto;
+  height: auto;
+  color: #f2d895;
+  font-size: 14px;
+}
+.hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini .role-thumb-mini-rank,
+.hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini.is-active .role-thumb-mini-rank {
+  top: auto;
+  right: 2px;
+  bottom: 1px;
+  font-size: 6px;
+}
+.hero-control-slot .role-open-button.generic-role-thumb .role-thumb-grid::before {
+  display: none;
+  content: none;
+}
+.hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini.is-active::after {
+  display: none;
+  content: none;
+}
+
+@media (max-width: 600px) {
+  .hero-control-slot .role-open-button .role-thumb-grid {
+    width: 50px;
+    height: 55px;
+    min-height: 55px;
+    gap: 2px;
+  }
+  .hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini .role-thumb-mini-icon,
+  .hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini.is-active .role-thumb-mini-icon {
+    font-size: 11px;
+  }
+  .hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini .role-thumb-mini-rank,
+  .hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini.is-active .role-thumb-mini-rank {
+    right: 1px;
+    bottom: 1px;
+    font-size: 5px;
+  }
+}
+
+/* Keep the compact role deck in sync with the physical card faces shown in
+   the picker. A face-up card uses the warm front treatment, a removed face-up
+   card is dimmed, and a face-down/taken card keeps the patterned back. */
+.hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini.front {
+  border-color: #806443;
+  background: linear-gradient(145deg, #46372f, #211f25);
+}
+.hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini.dark {
+  border-color: #48454d;
+  background: linear-gradient(145deg, #292832, #11131a);
+  filter: saturate(.35);
+  opacity: .58;
+}
+.hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini.back {
+  border-color: #575564;
+  background: repeating-linear-gradient(135deg, #3b3945 0 2px, #25242f 2px 5px);
+  color: #aaa9b5;
+}
+.hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini.is-chosen {
+  box-shadow: inset 0 0 0 1px #e5bd6544, inset 0 1px #fff4;
+}
+.hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini.is-active {
+  border-color: var(--gold-bright);
+  box-shadow: 0 0 0 1px #e5bd6544, inset 0 1px #fff5;
+}
+
+/* Final interaction layer -------------------------------------------------
+   Keep the eight-card trigger readable at every width.  Each mini card gets
+   its own inset surface and a small rank badge, so the badge never sits on
+   top of the role icon or clips against the trigger edge. */
+.hero-console {
+  grid-template-columns: 98px 38px 124px 38px 98px;
+  width: min(100%, 430px);
+  column-gap: 8px;
+}
+.hero-control-slot { min-width: 0; }
+.hero-control-slot .role-open-button {
+  width: 94px;
+  min-width: 94px;
+  height: 90px;
+  padding: 7px 5px 6px;
+}
+.hero-control-slot .role-open-button .role-thumb-grid {
+  width: 82px;
+  height: 70px;
+  min-height: 70px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 3px;
+}
+.hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini {
+  min-width: 0;
+  min-height: 0;
+  border-radius: 5px;
+  overflow: visible;
+}
+.hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini-icon {
+  min-width: 0;
+  font-size: 15px;
+  line-height: 1;
+}
+.hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini .role-thumb-mini-icon {
+  width: 100%;
+  height: 100%;
+  font-size: 15px;
+  line-height: 1;
+}
+.hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini .role-thumb-mini-rank {
+  top: 2px;
+  right: 2px;
+  bottom: auto;
+  z-index: 2;
+  min-width: 11px;
+  padding: 2px 2px 1px;
+  border: 1px solid #8f754f;
+  border-radius: 3px;
+  background: #1b1820eF;
+  color: var(--gold-bright);
+  font-size: 6px;
+  line-height: 1;
+  text-align: center;
+}
+.hero-control-slot .role-open-button:focus-visible {
+  outline: 2px solid var(--gold-bright);
+  outline-offset: 2px;
+}
+
+/* A no-building city message is centred in the whole lane, rather than
+   inheriting the card grid's first-column alignment. */
+.city-lane .city-buildings > .empty-city {
+  grid-column: 1 / -1;
+  justify-self: center;
+  align-self: center;
+  width: 100%;
+  min-height: 174px;
+  text-align: center;
+}
+.city-lane.my-city .city-buildings:has(> .empty-city) {
+  place-items: center;
+  justify-content: center;
+  align-content: center;
+}
+
+/* The end-turn action and deck counter share the right edge. */
+.hero-end-control {
+  justify-content: flex-end;
+  gap: 7px;
+}
+.district-deck {
+  position: relative;
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 48px;
+  height: 68px;
+  border: 1px solid #686174;
+  border-radius: 8px;
+  background: repeating-linear-gradient(135deg, #3a3747 0 3px, #252431 3px 7px);
+  box-shadow: inset 0 1px #fff3, 0 7px 12px #0007;
+  color: #d9c28d;
+  cursor: default;
+  isolation: isolate;
+}
+.district-deck::before {
+  position: absolute;
+  inset: 4px;
+  z-index: -1;
+  border: 1px solid #968ba544;
+  border-radius: 5px;
+  content: '';
+}
+.district-deck-back {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: 1px solid #9b8f70;
+  border-radius: 50%;
+  color: var(--gold-bright);
+  font-size: 14px;
+  text-shadow: 0 2px 4px #000a;
+}
+.district-deck-count {
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+  padding: 2px 3px;
+  border: 1px solid #806b4c;
+  border-radius: 4px;
+  background: #14131aeF;
+  color: var(--gold-bright);
+  font: 700 10px/1 'DM Mono', monospace;
+}
+.district-deck-count small {
+  margin-left: 1px;
+  color: var(--muted);
+  font-size: 7px;
+}
+.district-deck.is-drawing {
+  animation: district-deck-pulse .45s ease-in-out;
+}
+@keyframes district-deck-pulse {
+  50% { filter: brightness(1.35); transform: translateY(-2px) scale(1.04); }
+}
+
+/* Ability target picker. It shares the existing backdrop language but keeps
+   player, role and building targets large enough to tap. */
+.ability-target-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: #07080dcc;
+  backdrop-filter: blur(5px);
+}
+.ability-target-modal {
+  position: relative;
+  width: min(560px, 100%);
+  max-height: min(700px, calc(100dvh - 36px));
+  overflow: auto;
+  padding: 22px;
+  border: 1px solid #735940;
+  border-top: 3px solid var(--gold);
+  border-radius: 15px;
+  background: linear-gradient(145deg, #30272a, #17191f 78%);
+  box-shadow: 0 25px 70px #000b, inset 0 1px #fff2;
+}
+.ability-target-modal header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 15px;
+}
+.ability-target-modal header h2 {
+  margin: 4px 0 0;
+  color: var(--cream);
+  font: 700 22px/1.15 Fraunces, serif;
+}
+.ability-target-modal .modal-close,
+.ability-target-modal .ability-target-close {
+  flex: 0 0 auto;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 24px;
+  line-height: 1;
+}
+.ability-target-modal .modal-close:hover,
+.ability-target-modal .ability-target-close:hover { color: var(--gold-bright); }
+.ability-target-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 9px;
+}
+.ability-target-card {
+  display: grid;
+  grid-template-columns: 37px minmax(0, 1fr);
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  min-height: 62px;
+  padding: 8px 10px;
+  border: 1px solid #554a4e;
+  border-radius: 9px;
+  background: linear-gradient(145deg, #38323a, #1d1d26);
+  box-shadow: inset 0 1px #fff2, 0 5px 10px #0005;
+  color: var(--cream);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color .16s, transform .16s, filter .16s;
+}
+.ability-target-card:hover,
+.ability-target-card:focus-visible {
+  border-color: var(--gold-bright);
+  outline: 0;
+  transform: translateY(-2px);
+}
+.ability-target-card:disabled { cursor: default; filter: saturate(.3); opacity: .45; transform: none; }
+.ability-target-icon {
+  display: grid;
+  place-items: center;
+  width: 37px;
+  height: 37px;
+  border: 1px solid #82633f;
+  border-radius: 9px;
+  background: #4b382a;
+  font-size: 21px;
+}
+.ability-target-card strong,
+.ability-target-card small { display: block; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ability-target-card strong { font-size: 11px; }
+.ability-target-card small { margin-top: 4px; color: var(--muted); font: 9px/1.2 'DM Mono', monospace; }
+.ability-target-buildings {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
+  gap: 9px;
+}
+.ability-building-target {
+  width: 100%;
+  min-height: 122px;
+  padding: 9px;
+}
+.ability-building-target .district-icon { margin: 4px 0 8px; font-size: 27px; }
+.ability-target-owner { display: block; margin-top: auto; color: var(--muted); font-size: 9px; }
+.ability-target-empty {
+  display: grid;
+  min-height: 70px;
+  place-items: center;
+  color: var(--muted);
+  font-size: 11px;
+  text-align: center;
+}
+
+/* Cards briefly fly from the deck to the receiving player. Main.ts supplies
+   the Web Animations transform; this rule only handles the visual card face. */
+.draw-flight-card {
+  position: fixed;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 76px;
+  border: 1px solid #a28b67;
+  border-radius: 8px;
+  background: repeating-linear-gradient(135deg, #3a3747 0 3px, #252431 3px 7px);
+  box-shadow: 0 10px 20px #000b, inset 0 1px #fff4;
+  color: var(--gold-bright);
+  font-size: 22px;
+  pointer-events: none;
+  transform-origin: center;
+}
+.draw-flight-card::before {
+  position: absolute;
+  inset: 5px;
+  border: 1px solid #b09b7655;
+  border-radius: 5px;
+  content: '';
+}
+.draw-flight-card > * { position: relative; z-index: 1; }
+
+@media (max-width: 600px) {
+  .hero-console {
+    grid-template-columns: 70px 34px 112px 34px 70px;
+    width: 100%;
+    column-gap: 4px;
+  }
+  .hero-control-slot .role-open-button {
+    width: 68px;
+    min-width: 68px;
+    height: 78px;
+    padding: 5px 3px;
+  }
+  .hero-control-slot .role-open-button .role-thumb-grid {
+    width: 60px;
+    height: 61px;
+    min-height: 61px;
+    gap: 2px;
+  }
+  .hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini .role-thumb-mini-icon { font-size: 12px; }
+  .hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini .role-thumb-mini-rank {
+    top: 1px;
+    right: 1px;
+    min-width: 9px;
+    padding: 1px;
+    font-size: 5px;
+  }
+  .district-deck { width: 40px; height: 57px; border-radius: 7px; }
+  .district-deck-back { width: 21px; height: 21px; font-size: 11px; }
+  .district-deck-count { right: 2px; bottom: 2px; font-size: 8px; }
+  .district-deck-count small { font-size: 6px; }
+  .hero-end-control { gap: 4px; }
+  .ability-target-modal { padding: 17px 14px; }
+  .ability-target-grid { grid-template-columns: 1fr; }
+  .ability-target-buildings { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .district-deck.is-drawing { animation: none; }
+  .draw-flight-card { transition: none !important; }
+}
+
+/* The right rail contains two controls: ending the turn and the shared deck.
+   Give it enough room for both cards while keeping the hero centred. */
+.hero-console {
+  grid-template-columns: 106px 38px minmax(124px, 1fr) 38px 132px;
+  width: min(100%, 500px);
+}
+.hero-end-control {
+  min-width: 0;
+  flex-wrap: nowrap;
+}
+.hero-end-control .end-turn {
+  min-width: 67px;
+}
+
+/* A target drag is a shared table overlay. It deliberately sits above every
+   player's card so the dashed route remains visible while a skill is held. */
+.ability-drag-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  width: 100vw;
+  height: 100vh;
+  overflow: visible;
+  pointer-events: none;
+}
+.ability-drag-arrow {
+  fill: none;
+  stroke: #e8bf70;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 9 8;
+  filter: drop-shadow(0 2px 3px #000b);
+  animation: ability-arrow-dash .55s linear infinite;
+}
+@keyframes ability-arrow-dash {
+  to { stroke-dashoffset: -17; }
+}
+
+@media (max-width: 600px) {
+  .hero-console {
+    grid-template-columns: 64px 28px minmax(92px, 1fr) 28px 106px;
+    column-gap: 4px;
+    width: 100%;
+  }
+  .hero-control-slot .role-open-button { width: 62px; min-width: 62px; }
+  .hero-control-slot .role-open-button .role-thumb-grid { width: 55px; }
+  .hero-end-control .end-turn { min-width: 55px; padding-inline: 3px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ability-drag-arrow { animation: none; }
+}
+
+/* Online rooms reuse the carved metal and warm gold of the game table. */
+.online-setup {
+  display: grid;
+  width: min(600px, 100%);
+  gap: 18px;
+}
+.mode-switch {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 5px;
+  padding: 5px;
+  border: 1px solid #584537;
+  border-radius: 12px;
+  background: #0e1119;
+  box-shadow: inset 0 2px 6px #0008, 0 5px 10px #0003;
+}
+.mode-switch button {
+  min-height: 43px;
+  padding: 9px 12px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: color .16s, border-color .16s, background .16s;
+}
+.mode-switch button:hover { color: var(--cream); background: #ffffff08; }
+.mode-switch button.active {
+  border-color: #967346;
+  background: linear-gradient(145deg, #614930, #362b29);
+  box-shadow: inset 0 1px #ffe6b729, 0 3px 7px #0004;
+  color: var(--gold-bright);
+}
+.online-form { display: grid; gap: 16px; }
+.online-form label {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  margin: 0;
+  color: #c0b8ad;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.online-form label strong { color: var(--gold-bright); font: 500 12px 'DM Mono', monospace; }
+.online-form input,
+.online-form select {
+  grid-column: 1 / -1;
+  width: 100%;
+  min-height: 43px;
+  padding: 10px 12px;
+  border: 1px solid #665144;
+  border-radius: 8px;
+  outline: none;
+  background: #10131c;
+  box-shadow: inset 0 2px 5px #0006;
+  color: var(--cream);
+  font: 13px/1.4 Manrope, 'Microsoft YaHei', sans-serif;
+  transition: border-color .16s, box-shadow .16s;
+}
+.online-form input::placeholder { color: var(--dim); }
+.online-form input:focus,
+.online-form select:focus {
+  border-color: var(--gold);
+  box-shadow: inset 0 2px 5px #0006, 0 0 0 3px #e5b76218;
+}
+.online-form input[type='range'] { min-height: 24px; padding: 0; border: 0; background: transparent; box-shadow: none; }
+.online-form input[type='checkbox'] { grid-column: auto; width: 17px; min-height: 17px; accent-color: var(--gold); }
+.online-form select { color-scheme: dark; cursor: pointer; }
+.online-form .form-row,
+.online-form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.online-controls,
+.lobby-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.online-controls > button,
+.lobby-actions > button { flex: 1 1 auto; min-height: 42px; }
+.online-controls .secondary,
+.lobby-actions .secondary,
+.online-button,
+.invite-button {
+  padding: 10px 14px;
+  border: 1px solid #796044;
+  border-radius: 8px;
+  background: linear-gradient(145deg, #3a3130, #20202a);
+  box-shadow: inset 0 1px #fff2, 0 4px 8px #0005;
+  color: var(--gold-bright);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color .16s, filter .16s, transform .16s;
+}
+.online-controls .secondary:hover,
+.lobby-actions .secondary:hover,
+.online-button:hover,
+.invite-button:hover { border-color: var(--gold); filter: brightness(1.12); transform: translateY(-1px); }
+.online-controls button:disabled,
+.lobby-actions button:disabled,
+.mode-switch button:disabled,
+.invite-button:disabled { opacity: .42; cursor: default; transform: none; filter: saturate(.4); }
+.online-controls button:focus-visible,
+.lobby-actions button:focus-visible,
+.mode-switch button:focus-visible,
+.invite-button:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 3px; }
+.online-help { color: var(--muted); font-size: 11px; line-height: 1.8; overflow-wrap: anywhere; }
+.online-help a { color: var(--gold-bright); text-underline-offset: 3px; }
+.online-notice {
+  padding: 11px 13px;
+  border: 1px solid #79604480;
+  border-radius: 9px;
+  background: #211b21;
+  color: #d9c8a9;
+  font-size: 12px;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+.online-notice.error { border-color: #d36c6166; background: #40232366; color: #f0aaa2; }
+.online-notice.success { border-color: #72b28a66; background: #243b2e66; color: #a9d8b7; }
+.online-lobby {
+  display: grid;
+  width: min(680px, 100%);
+  gap: 20px;
+  padding: 26px;
+  border: 1px solid #806044;
+  border-radius: 18px;
+  background: radial-gradient(ellipse at 70% 0, #4b393126, transparent 60%), linear-gradient(145deg, #2c2329, #151821);
+  box-shadow: 0 25px 65px #0009, inset 0 1px #fff2;
+}
+.online-lobby > header,
+.online-lobby .lobby-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; }
+.online-lobby h2 { margin-top: 6px; color: var(--cream); font: 700 27px/1.2 Fraunces, 'Microsoft YaHei', serif; }
+.room-code {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 12px;
+  border: 1px solid #967348;
+  border-radius: 9px;
+  background: #17141a;
+  box-shadow: inset 0 2px 4px #0005;
+  color: var(--gold-bright);
+  font: 500 20px/1.2 'DM Mono', monospace;
+  letter-spacing: .13em;
+}
+.room-code small { color: var(--muted); font: 10px/1.3 Manrope, 'Microsoft YaHei', sans-serif; letter-spacing: 0; }
+.lobby-seats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.lobby-seat {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 11px;
+  min-height: 73px;
+  padding: 12px;
+  border: 1px solid #494047;
+  border-radius: 11px;
+  background: linear-gradient(145deg, #302c35, #1a1c25);
+  box-shadow: inset 0 1px #fff1, 0 5px 10px #0004;
+}
+.lobby-seat.host { border-color: #a68148; }
+.lobby-seat.ready { border-color: #62876a; }
+.lobby-seat.offline { border-color: #7c554d; background: linear-gradient(145deg, #32272c, #1b1b23); }
+.lobby-seat.empty { border-style: dashed; background: #13161f80; box-shadow: none; }
+.lobby-seat.empty .lobby-avatar { border-color: #51474b; background: #23212a; color: var(--dim); }
+.lobby-avatar {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 43px;
+  border: 1px solid #9a7954;
+  border-radius: 11px;
+  background: linear-gradient(145deg, #65503b, #342b2b);
+  box-shadow: inset 0 1px #ffdda829, 0 3px 5px #0004;
+  color: var(--gold-bright);
+  font-size: 20px;
+}
+.lobby-member-copy { min-width: 0; }
+.lobby-member-copy strong,
+.lobby-member-copy small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lobby-member-copy strong { color: var(--cream); font-size: 12px; line-height: 1.4; }
+.lobby-member-copy small { margin-top: 4px; color: var(--muted); font-size: 10px; line-height: 1.4; }
+.lobby-member-state { color: #a6a9b8; font-size: 10px; white-space: nowrap; }
+.lobby-seat.ready .lobby-member-state { color: #97c9a5; }
+.lobby-seat.offline .lobby-member-state { color: #e59b8e; }
+.lobby-seat.host .lobby-member-copy small { color: var(--gold-bright); }
+.lobby-actions { padding-top: 16px; border-top: 1px solid #67504466; }
+.connection-chip {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border: 1px solid #66554d;
+  border-radius: 99px;
+  background: #171923;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+.connection-chip::before { width: 5px; height: 5px; border-radius: 50%; background: currentColor; content: ''; }
+.connection-chip.connected { border-color: #62876a88; color: #99cfa9; }
+.connection-chip.reconnecting { border-color: #967348; color: var(--gold-bright); }
+.connection-chip.reconnecting::before { animation: online-connection-pulse 1.3s ease-in-out infinite; }
+.connection-chip.offline { border-color: #9b5b5088; color: #e59b8e; }
+@keyframes online-connection-pulse { 50% { opacity: .3; } }
+.online-table-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin: -4px 0 10px;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.4;
+}
+.online-table-bar .room-code { gap: 5px; padding: 4px 7px; font-size: 11px; letter-spacing: .08em; border-radius: 6px; }
+.online-table-bar .room-code small { font-size: 9px; }
+.online-table-bar .invite-button,
+.online-table-bar .online-button,
+.online-table-bar > button { min-height: 28px; padding: 5px 9px; border-radius: 6px; font-size: 10px; }
+.online-table-bar a { color: var(--gold-bright); text-underline-offset: 3px; }
+
+@media (max-width: 600px) {
+  .online-setup { gap: 14px; }
+  .online-lobby { gap: 16px; padding: 20px 16px; }
+  .online-lobby h2 { font-size: 24px; }
+  .room-code { padding: 8px 10px; font-size: 17px; }
+  .lobby-seats { grid-template-columns: 1fr; gap: 8px; }
+  .lobby-seat { min-height: 65px; padding: 10px; }
+  .online-form .form-row,
+  .online-form-row { gap: 10px; }
+  .online-controls,
+  .lobby-actions { gap: 8px; }
+  .online-table-bar { justify-content: center; gap: 6px; margin-top: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .connection-chip.reconnecting::before { animation: none; }
+}
+
+/* Give all eight role miniatures real card widths. Icon and rank occupy
+   separate rows instead of overlapping inside the old narrow corner badge. */
+.hero-console {
+  grid-template-columns: 136px 38px minmax(124px, 1fr) 38px 132px;
+  width: min(100%, 560px);
+}
+.hero-control-slot .role-open-button {
+  width: 128px;
+  min-width: 128px;
+  height: 100px;
+  padding: 7px 6px;
+  overflow: visible;
+}
+.hero-control-slot .role-open-button .role-thumb-grid {
+  width: 114px;
+  height: 82px;
+  min-height: 82px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+}
+.hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini,
+.hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini.is-active {
+  grid-template-rows: minmax(0, 1fr) 9px;
+  grid-template-columns: minmax(0, 1fr);
+  padding: 3px 1px 2px;
+  overflow: hidden;
+  border-radius: 4px;
+}
+.hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini .role-thumb-mini-icon,
+.hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini.is-active .role-thumb-mini-icon {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  font-size: 17px;
+  line-height: 1;
+}
+.hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini .role-thumb-mini-rank,
+.hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini.is-active .role-thumb-mini-rank {
+  position: static;
+  display: block;
+  width: auto;
+  min-width: 0;
+  height: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-size: 7px;
+  line-height: 9px;
+  text-align: center;
+}
+
+/* Horizontal phone swipes scroll the hand; upward gestures lift a playable
+   card. The floating clone can travel above the tray without being clipped. */
+.hand-card[data-build]:not(:disabled),
+.hand-income-card[data-action]:not(:disabled) {
+  touch-action: pan-x pinch-zoom;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  cursor: grab;
+}
+.hand-dragging,
+.hand-dragging * { cursor: grabbing !important; user-select: none; }
+.hand-card.is-hand-drag-source,
+.hand-income-card.is-hand-drag-source { opacity: .2; }
+.hand-card.hand-drag-ghost,
+.hand-income-card.hand-drag-ghost {
+  position: fixed;
+  z-index: 125;
+  min-height: 0;
+  margin: 0;
+  transform-origin: center;
+  transition: border-color .12s, box-shadow .12s;
+  pointer-events: none;
+  opacity: 1;
+  border-color: #d8b46d;
+  box-shadow: 0 18px 32px #000a, 0 0 0 1px #e5b76244, inset 0 1px #fff4;
+}
+.hand-card.hand-drag-ghost.is-release-ready,
+.hand-income-card.hand-drag-ghost.is-release-ready {
+  border-color: var(--gold-bright);
+  box-shadow: 0 18px 32px #000a, 0 0 18px #e5b76255, inset 0 1px #fff4;
+}
+.city-stage.hand-release-zone {
+  box-shadow: inset 0 0 0 1px #e5b76277, inset 0 0 24px #e5b7620c;
+}
+
+@media (max-width: 600px) {
+  .hero-console {
+    grid-template-columns: 86px 34px minmax(68px, 1fr) 34px 66px;
+    column-gap: 4px;
+    width: 100%;
+    min-height: 158px;
+  }
+  .hero-control-slot .role-open-button {
+    width: 84px;
+    min-width: 84px;
+    height: 148px;
+    padding: 5px;
+  }
+  .hero-control-slot .role-open-button .role-thumb-grid {
+    width: 72px;
+    height: 136px;
+    min-height: 136px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(4, minmax(0, 1fr));
+    gap: 4px;
+  }
+  .hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini,
+  .hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini.is-active {
+    grid-template-rows: minmax(0, 1fr) 7px;
+    padding: 2px 0 1px;
+  }
+  .hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini .role-thumb-mini-icon,
+  .hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini.is-active .role-thumb-mini-icon { font-size: 16px; }
+  .hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini .role-thumb-mini-rank,
+  .hero-control-slot .role-open-button .role-thumb-grid > .role-thumb-mini.is-active .role-thumb-mini-rank {
+    font-size: 6px;
+    line-height: 7px;
+  }
+  .hero-end-control { flex-direction: column; align-items: center; gap: 8px; }
+  .hero-end-control .end-turn { width: 62px; min-width: 62px; }
+}
+
+@media (max-width: 340px) {
+  .hero-console { grid-template-columns: 60px 34px minmax(62px, 1fr) 34px 55px; column-gap: 3px; }
+  .hero-control-slot .role-open-button { width: 58px; min-width: 58px; padding-inline: 5px; }
+  .hero-control-slot .role-open-button .role-thumb-grid { width: 46px; gap: 3px; }
+  .hero-end-control .end-turn { width: 55px; min-width: 55px; }
+}
+
+/* The same role artwork scales from a card face to a table avatar. */
+.role-card-icon .role-emblem { width: 56px; height: 56px; display: block; }
+.hero-avatar .role-emblem { width: 82%; height: 82%; }
+.orbit-avatar .role-emblem { width: 94%; height: 94%; }
+.role-thumb-mini-icon .role-emblem,
+.skill-card-icon .role-emblem,
+.ability-target-icon .role-emblem { width: 100%; height: 100%; display: block; }
+.orbit-copy small .role-emblem,
+.hero-name small .role-emblem,
+.ability-target-modal .eyebrow .role-emblem { width: 1.4em; height: 1.4em; }
+
+@media (max-width: 600px), (max-width: 900px) and (max-height: 500px) {
+  .role-card-icon .role-emblem { width: 36px; height: 36px; }
+}
+
+@media (max-width: 600px) and (max-height: 650px), (max-width: 900px) and (max-height: 500px) {
+  .role-card-icon .role-emblem { width: 30px; height: 30px; }
+}
